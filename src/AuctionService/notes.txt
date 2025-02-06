@@ -1,0 +1,24 @@
+>choose webapi template
+>remove swagger
+>make entities - template class- get set
+>entity/class name will be the tables and the properties are the columns
+>make connections by putting other class properties
+>follow conventions, Id, <entityName>Id
+>install Microsoft.EntityFrameworkCore.Design , Npgsql.EntityFrameworkCore.PostgreSQL, automapper
+>make DbContext
+>add dbcontext service to program.cs 
+>Configure  "DefaultConnection":"Server=localhost:5432;User Id=postgres;Password=postgrespw;Database=auction"
+>run //dotnet ef migrations add "InitialCreate" -o Data/Migrations to make migrations
+>Migrations = class to db
+>make dockercomposeyml
+> go to cd Carsties then => docker compose up -d
+> go to AUctionService then => dotnet ef database update
+>now db is created, make a db initializer
+>try it in the program cs in try catch block
+>dotnet run to put the initializer 
+> make dtos
+>use automapper to map entities to dto
+>make the controller
+>inject dbcontext and mapper in controller
+>make crud controller
+>

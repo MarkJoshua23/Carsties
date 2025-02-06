@@ -1,0 +1,1 @@
+Entities are Models, it represents how we want the database tables and columns to look like
