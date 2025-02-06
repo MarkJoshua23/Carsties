@@ -1,0 +1,3 @@
+>choose webapi template
+>remove swagger
+>install nugets
