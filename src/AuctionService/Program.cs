@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.WebHost.UseUrls("http://localhost:7001");
 builder.Services.AddControllers();
 //dotnet ef migrations add "InitialCreate" -o Data/Migrations to make migrations
 builder.Services.AddDbContext<AuctionDbContext>(opt =>
