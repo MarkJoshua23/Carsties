@@ -5,3 +5,6 @@
 > appsettings.json ->     "MongoDbConnection":"mongodb://root:mongopw@localhost"
 > paste json seed in json file
 >make a db initializer using the json to seed data to mongodb
+>mongodb dont need migrations, dbcontext
+>mongodb directly uses the entity/Model
+>if you insert with different entity it will make new entity
