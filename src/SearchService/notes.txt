@@ -1,3 +1,7 @@
 >choose webapi template
 >remove swagger
->install nugets
+>install nugets AutoMapper.Extensions.Microsoft.DependancyInjection, MongoDB.Entities
+>Make a Model /Entity using mongodb Entity
+> appsettings.json ->     "MongoDbConnection":"mongodb://root:mongopw@localhost"
+> paste json seed in json file
+>make a db initializer using the json to seed data to mongodb
