@@ -8,3 +8,6 @@
 >mongodb dont need migrations, dbcontext
 >mongodb directly uses the entity/Model
 >if you insert with different entity it will make new entity
+>make the controller
+>use pagination
+>apply filters
