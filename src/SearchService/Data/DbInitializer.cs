@@ -3,6 +3,7 @@ using System.Text.Json;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Models;
+using SearchService.Services;
 
 namespace SearchService.Data;
 
@@ -24,21 +25,33 @@ public class DbInitializer
 
         //count the items inside the db
         var count = await DB.CountAsync<Item>();
-        if (count == 0)
-        {
-            Console.WriteLine("No data found :( - seeding data...");
 
-            //get the json from auctions.json
-            var itemData = await File.ReadAllTextAsync("Data/auctions.json");
+        using var scope = app.Services.CreateScope();
 
-            //used in json to list
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var httpClient = scope.ServiceProvider.GetRequiredService<AuctionSvcHttpClient>();
 
-            //json to list
-            var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
+        var items = await httpClient.GetItemsForSearchDb();
+        Console.WriteLine(items.Count + "return from service");
 
-            //save to db
-            await DB.SaveAsync(items);
-        }
+        if (items.Count>0) await DB.SaveAsync(items);
+
+
+        // //only use this if youre going to use a json
+        // if (count == 0)
+        // {
+        //     Console.WriteLine("No data found :( - seeding data...");
+
+        //     //get the json from auctions.json
+        //     var itemData = await File.ReadAllTextAsync("Data/auctions.json");
+
+        //     //used in json to list
+        //     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        //     //json to list
+        //     var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
+
+        //     //save to db
+        //     await DB.SaveAsync(items);
+        // }
     }
 }

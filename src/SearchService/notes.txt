@@ -7,7 +7,12 @@
 >make a db initializer using the json to seed data to mongodb
 >mongodb dont need migrations, dbcontext
 >mongodb directly uses the entity/Model
->if you insert with different entity it will make new entity
+>if you insert with different entity it will make new collection
 >make the controller
 >use pagination
 >apply filters
+>u can change the json fetch to synchronous request
+>when assigning field like _context, _config, etc. click the lightbulb
+>controllers use field assignment, the rest are scoped
+>apply polling for requesting new content from auction service
+>polling - repeating request until it succeeds

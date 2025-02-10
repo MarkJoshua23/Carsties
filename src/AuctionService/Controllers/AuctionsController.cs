@@ -3,6 +3,7 @@ using AuctionService.Data;
 using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,15 +30,27 @@ public class AuctionsController : ControllerBase
 
     [HttpGet]
     // List<AuctionDto>, meaning it will return a list of AuctionDto objects.
-    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions()
+    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string date)//to know which data to send
     {
-        // Auctions is from Dbset in AuctionDbContext
-        // var auction is the reference of the real entity so you manipulate it to change entity
-        var auctions = await _context.Auctions
-            .Include(x => x.Item) // SQL: JOIN Item ON Auction.ItemId = Item.Id
-            .OrderBy(x => x.Item.Make) // SQL: ORDER BY Item.Make
-            .ToListAsync(); // SQL: SELECT * FROM Auctions JOIN Item ORDER BY Item.Make
-        return _mapper.Map<List<AuctionDto>>(auctions); // Return mapped DTO instead of entity
+        //asqueryable so we can still manipulate and query after its ordered
+        var query = _context.Auctions.OrderBy(x => x.Item.Make).AsQueryable();
+
+        if (!string.IsNullOrEmpty(date))
+        {
+            //updatedat compared to date| only return dates newer than the date of the other service
+            query = query.Where(x => x.UpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
+        }
+
+        //project automatically joins db if it has FK, convert entity to dto
+        return await query.ProjectTo<AuctionDto>(_mapper.ConfigurationProvider).ToListAsync();
+
+        // // Auctions is from Dbset in AuctionDbContext
+        // // var auction is the reference of the real entity so you manipulate it to change entity
+        // var auctions = await _context.Auctions
+        //     .Include(x => x.Item) // SQL: JOIN Item ON Auction.ItemId = Item.Id
+        //     .OrderBy(x => x.Item.Make) // SQL: ORDER BY Item.Make
+        //     .ToListAsync(); // SQL: SELECT * FROM Auctions JOIN Item ORDER BY Item.Make
+        // return _mapper.Map<List<AuctionDto>>(auctions); // Return mapped DTO instead of entity
     }
 
     [HttpGet("{id}")]

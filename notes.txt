@@ -1,0 +1,6 @@
+>dotnet new webapi -o src/AuctionService -controllers
+>dotnet new webapi -o src/SearchService -controllers
+>docker compose up -d => run docker
+>when a service is registered in program cs it can be injected anywhere
+>make a http client that fetch new data from auction service
+>polling - repeating request until it succeeds => microsoft.extensions.http.polly
