@@ -1,0 +1,3 @@
+>disable nullable
+>make auctioncreated contract as a event contract/dto when a item is created
+>make auctionupdated contract as a event contract/dto when a item is updated, its less column since certain columns cant be updated

@@ -1,5 +1,6 @@
 >dotnet new webapi -o src/AuctionService -controllers
 >dotnet new webapi -o src/SearchService -controllers
+>dotnet sln add src/Contracts
 >docker compose up -d => run docker
 >when a service is registered in program cs it can be injected anywhere
 >make a http client that fetch new data from auction service
@@ -8,3 +9,7 @@
 ==FOR ASYNCRONOUS DATA PASSING BETWEEN DB==
 > using a event bus RabbitMQ
 >using masstransit to abstract the rabbit and services connection
+> making new class library to avoid copy pasting:  dotnet new classlib -o src/Contracts
+>adding as refernce : dotnet add reference ../../src/Contracts/
+>Contracts = DTO
+>we need Class LIbraru=y because masstransit need to have contracts in the same namespace/directory
