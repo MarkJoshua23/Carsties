@@ -3,4 +3,8 @@
 >docker compose up -d => run docker
 >when a service is registered in program cs it can be injected anywhere
 >make a http client that fetch new data from auction service
+==FOR SYNCRONOUS DATA PASSING BETWEEN DB==
 >polling - repeating request until it succeeds => microsoft.extensions.http.polly
+==FOR ASYNCRONOUS DATA PASSING BETWEEN DB==
+> using a event bus RabbitMQ
+>using masstransit to abstract the rabbit and services connection

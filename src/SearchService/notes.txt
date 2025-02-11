@@ -14,5 +14,7 @@
 >u can change the json fetch to synchronous request
 >when assigning field like _context, _config, etc. click the lightbulb
 >controllers use field assignment, the rest are scoped
+==FOR SYNCRONOUS DATA PASSING BETWEEN DB==
 >apply polling for requesting new content from auction service
 >polling - repeating request until it succeeds
+>>polling - repeating request until it succeeds => microsoft.extensions.http.polly

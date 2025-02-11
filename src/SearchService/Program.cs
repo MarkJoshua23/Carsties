@@ -1,3 +1,4 @@
+using MassTransit;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using Polly;
@@ -14,6 +15,16 @@ builder.Services.AddControllers();
 
 // httpclient and the polling
 builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolicy());
+
+//rabbitmq
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,7 +49,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
 
 
 app.Run();
-//polling 
+//polling will repeat request of http errors
 static IAsyncPolicy<HttpResponseMessage> GetPolicy()
 => HttpPolicyExtensions
 .HandleTransientHttpError()
