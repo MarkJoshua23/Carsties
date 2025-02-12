@@ -4,6 +4,8 @@ using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,12 +22,15 @@ public class AuctionsController : ControllerBase
 {
     private readonly AuctionDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     //make dbcontext and mapper available for every instance
-    public AuctionsController(AuctionDbContext context, IMapper mapper)
+    //also add mass transit IPublishEndpoint
+    public AuctionsController(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -82,10 +87,18 @@ public class AuctionsController : ControllerBase
         // If 0 changes, then nothing happens; if > 0, then something changed
         var results = await _context.SaveChangesAsync() > 0; // SQL: COMMIT; if no rows affected, rollback
 
+
+        //get the new auction item
+        var newAuction = _mapper.Map<AuctionDto>(auction);
+        //publish the changes to the service bus
+        await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
+
+
         if (!results) return BadRequest("Could not save changes"); // Return 400 if save fails
 
         // Return the content and location of the inserted data + the other data in AuctionDto
-        return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, _mapper.Map<AuctionDto>(auction));
+        return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, newAuction);
         // SQL: RETURN 201 Created, location header with new auction Id
     }
 

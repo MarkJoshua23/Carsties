@@ -12,4 +12,8 @@
 > making new class library to avoid copy pasting:  dotnet new classlib -o src/Contracts
 >adding as refernce : dotnet add reference ../../src/Contracts/
 >Contracts = DTO
+>contracts will be the dto that will be the middleman between services
 >we need Class LIbraru=y because masstransit need to have contracts in the same namespace/directory
+>setup consumers in services that needs to be updated like SearchService
+>when consuming, map the consumerdto/servicebusdto to the local entity of the service
+>when publishing, map the local dto/entity to the servicebus dto
