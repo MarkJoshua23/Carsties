@@ -18,3 +18,11 @@
 >apply polling for requesting new content from auction service
 >polling - repeating request until it succeeds
 >>polling - repeating request until it succeeds => microsoft.extensions.http.polly
+
+==FOR ASYNCRONOUS DATA PASSING BETWEEN DB==
+>use a service bus/ event bus
+>make a consumers that will get items in the service bus
+> we will use masstransit so make names end with "Consumer"
+>make automapper to map contract to mongo entity
+>put masstransit t service
+>include the consumer made to the masstransit sevice

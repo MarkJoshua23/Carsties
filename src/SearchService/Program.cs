@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using Polly;
 using Polly.Extensions.Http;
+using SearchService.Consumers;
 using SearchService.Data;
 using SearchService.Models;
 using SearchService.Services;
@@ -19,6 +20,11 @@ builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolic
 //rabbitmq
 builder.Services.AddMassTransit(x =>
 {
+    //make consumer available
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+
+    //to name the consumer search-AuctionCreatedConsumer so there will be no conflict if other service use the same consumer name
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);

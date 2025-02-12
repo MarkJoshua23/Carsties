@@ -1,3 +1,5 @@
 >disable nullable
+this contracts are dtos that can be accessed in both service
 >make auctioncreated contract as a event contract/dto when a item is created
 >make auctionupdated contract as a event contract/dto when a item is updated, its less column since certain columns cant be updated
+>make auctiondeleted contract as a event contract/dto when a item is deleted
