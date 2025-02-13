@@ -27,3 +27,4 @@
 >put masstransit t service
 >include the consumer made to the masstransit sevice in program cs
 >make sure to include retry mechanism in consumer in case db is down
+>make another consumer to listen to the error messages or items that causes system exceptiom

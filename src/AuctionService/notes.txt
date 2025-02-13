@@ -24,6 +24,6 @@
 >
 ===for outbox ====
 >make sure to modify masstransit service in program cs
->make migrations after the outbox is added to dbcontext
+>make migrations after the outbox is added to dbcontext|||dotnet ef migrations add Outbox ==> in the service root directory
 >modify the controller for outbox
 >MassTransit only publishes events from the Outbox AFTER the transaction commits.

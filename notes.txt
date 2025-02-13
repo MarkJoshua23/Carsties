@@ -17,11 +17,15 @@
 >setup consumers in services that needs to be updated like SearchService
 >when consuming, map the consumerdto/servicebusdto to the local entity of the service
 >when publishing, map the local dto/entity to the servicebus dto
->the consumer will automatically consume same dto
+>the consumer will automatically consume same dto, just need to setup consumers the automap and put it in service in program cs and its already okay
 >use outbox for failed consumes, it will store the failed requests
 >masstransit.entityframeworkcore nuget to use the outbox, it should be the same version as the masstransit
 >install the masstransit.entityframeworkcore to the publishers
 >REMEMBER if something in transaction in entity controller fails like sorting, filtering, saving, the entire process fails
 >that means masstransit.entityframeworkcore is IMPORTANT since it will INCLUDE MASSTRANSIT to a transaction
->that means if publish fails, db saving fails, vice versa
+>that means if publish fails, db saving fails, vice versa preventing not synced db
 > because of outbox If SaveChangesAsync() fails, the event never reaches RabbitMQ.
+> implement masstransit messageretry so that if a consume failed
+>if the consumer throws an error it is loaded in service bus which can be consumed by the publisher to know whats the problem and decide if to rollback
+> make another consumer in publisher servce to listen to the fault /error messages or items that causes system exceptiom
+> use the fault consumer to try to fix problems then publish it again

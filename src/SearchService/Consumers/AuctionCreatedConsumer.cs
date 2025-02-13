@@ -13,7 +13,8 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 
     //automapper dependency injection
     //lightbuld then create _mapper
-    public AuctionCreatedConsumer(IMapper mapper){
+    public AuctionCreatedConsumer(IMapper mapper)
+    {
         _mapper = mapper;
     }
 
@@ -23,8 +24,11 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
     public async Task Consume(ConsumeContext<AuctionCreated> context)
     {
         Console.WriteLine("--------->Consuming auction created" + context.Message.Id);
-    // put the consumed items in Item =
+        // put the consumed items in Item =
         var item = _mapper.Map<Item>(context.Message);
+
+        //argument exception means the argument/parameter passed is invalid
+        if (item.Model == "foo") throw new ArgumentException("Cannot sell cars named Foo");
         //add to mongo
         await item.SaveAsync();
     }
