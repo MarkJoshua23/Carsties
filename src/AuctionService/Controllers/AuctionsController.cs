@@ -84,16 +84,18 @@ public class AuctionsController : ControllerBase
         // Add the data from client
         _context.Auctions.Add(auction); // SQL: INSERT INTO Auctions (fields)
 
-        // If 0 changes, then nothing happens; if > 0, then something changed
-        var results = await _context.SaveChangesAsync() > 0; // SQL: COMMIT; if no rows affected, rollback
-
 
         //get the new auction item
         var newAuction = _mapper.Map<AuctionDto>(auction);
-        //publish the changes to the service bus
+        //publish to outbox first, wait for the db to save
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
 
 
+
+        //if the publish fails then the whole transaction fails
+        //if the save db fails, the outbox
+        // If 0 changes, then nothing happens; if > 0, then something changed
+        var results = await _context.SaveChangesAsync() > 0; // SQL: COMMIT; if no rows affected, rollback
 
         if (!results) return BadRequest("Could not save changes"); // Return 400 if save fails
 

@@ -21,12 +21,22 @@ builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolic
 builder.Services.AddMassTransit(x =>
 {
     //make consumer available
+    //this will know that this consumer should look for 
     x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
 
     //to name the consumer search-AuctionCreatedConsumer so there will be no conflict if other service use the same consumer name
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     x.UsingRabbitMq((context, cfg) =>
     {
+        //configure search-auction-created
+        //retry the consumer if theres problem like if mongodb doesnt work
+        cfg.ReceiveEndpoint("search-auction-created", e =>
+        {
+            //5 times every 5 secs
+            e.UseMessageRetry(r => r.Interval(5, 5));
+            e.ConfigureConsumer<AuctionCreatedConsumer>(context);
+        });
+        //rest of endpoints
         cfg.ConfigureEndpoints(context);
     });
 });

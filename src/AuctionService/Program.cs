@@ -19,6 +19,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //rabbitmq
 builder.Services.AddMassTransit(x =>
 {
+    //store failed publish to outbox then try every 10 seconds to attempt publishing
+    x.AddEntityFrameworkOutbox<AuctionDbContext>(o =>
+    {
+        o.QueryDelay = TimeSpan.FromSeconds(10);
+        //use the postgres from the dbcontext
+        o.UsePostgres();
+        o.UseBusOutbox();
+    });
+
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);

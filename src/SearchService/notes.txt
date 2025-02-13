@@ -25,4 +25,5 @@
 > we will use masstransit so make names end with "Consumer"
 >make automapper to map contract to mongo entity
 >put masstransit t service
->include the consumer made to the masstransit sevice
+>include the consumer made to the masstransit sevice in program cs
+>make sure to include retry mechanism in consumer in case db is down
