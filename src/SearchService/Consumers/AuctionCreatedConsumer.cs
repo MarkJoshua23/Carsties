@@ -27,6 +27,7 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
         // put the consumed items in Item =
         var item = _mapper.Map<Item>(context.Message);
 
+
         //argument exception means the argument/parameter passed is invalid
         if (item.Model == "foo") throw new ArgumentException("Cannot sell cars named Foo");
         //add to mongo

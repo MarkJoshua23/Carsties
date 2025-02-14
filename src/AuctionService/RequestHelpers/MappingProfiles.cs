@@ -21,6 +21,6 @@ public class MappingProfiles : Profile
 
         //map local dto to service bus dto/ local dto to contracts, AUction created is like the middleman
         CreateMap<AuctionDto, AuctionCreated>();
-
+        CreateMap<AuctionDto, AuctionUpdated>();
     }
 }

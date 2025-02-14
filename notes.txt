@@ -29,3 +29,12 @@
 >if the consumer throws an error it is loaded in service bus which can be consumed by the publisher to know whats the problem and decide if to rollback
 > make another consumer in publisher servce to listen to the fault /error messages or items that causes system exceptiom
 > use the fault consumer to try to fix problems then publish it again
+
+===to make a new service pub,consumer====
+>modify mapper in consumer, map the local dto to service bus dto
+>include the publish to the controller
+>go to the consumer service
+>add consumer file
+>map the service bus dto to local dto if necessary
+>or you can just make a Entity object like new instance of entity replacing the contents with dto content
+>add the retry feature in the program cs masstransit service
