@@ -19,23 +19,18 @@ public class AuctionUpdatedConsumer : IConsumer<AuctionUpdated>
     public async Task Consume(ConsumeContext<AuctionUpdated> context)
     {
         Console.WriteLine("--------->Consuming auction updated" + context.Message.Id);
-        // put auctionupdated in a local var
-        var item = context.Message;
+        // map the contract to local entity, dont worry about the null
+        var item = _mapper.Map<Item>(context.Message);
 
-        // Create an Item object with just the properties we want to update
-        var updateData = new Item
-        {
-            Make = item.Make,
-            Model = item.Model,
-            Year = item.Year,
-            Color = item.Color,
-            MileAge = item.MileAge
-        };
-
-        await DB.Update<Item>()
-        .MatchID(item.Id)
-        .ModifyOnly(m => new { m.Make, m.Model, m.Year, m.Color, m.MileAge }, updateData)
+        var result = await DB.Update<Item>()
+        .MatchID(context.Message.Id)
+        .ModifyOnly(m => new { m.Make, m.Model, m.Year, m.Color, m.MileAge }, item)
         .ExecuteAsync();
+
+        if (!result.IsAcknowledged)
+        {
+            throw new MessageException(typeof(AuctionUpdated), "Problem updating mongodb");
+        }
 
     }
 }

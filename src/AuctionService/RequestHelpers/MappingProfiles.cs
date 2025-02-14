@@ -21,6 +21,10 @@ public class MappingProfiles : Profile
 
         //map local dto to service bus dto/ local dto to contracts, AUction created is like the middleman
         CreateMap<AuctionDto, AuctionCreated>();
-        CreateMap<AuctionDto, AuctionUpdated>();
+
+        //tells automapper that it should also map Item but it doesnt know the properties of the Item
+        CreateMap<Auction, AuctionUpdated>().IncludeMembers(a => a.Item);
+        //this tells the automapper what are the properties of the Item
+        CreateMap<Item, AuctionUpdated>();
     }
 }

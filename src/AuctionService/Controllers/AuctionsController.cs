@@ -120,8 +120,10 @@ public class AuctionsController : ControllerBase
         auction.Item.MileAge = updateAuctionDto.MileAge ?? auction.Item.MileAge;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
-        var updateAuction = _mapper.Map<AuctionDto>(auction);
-        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(updateAuction));
+
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
+
+
         var results = await _context.SaveChangesAsync() > 0; // SQL: COMMIT if rows affected
 
         if (!results) return BadRequest("Problem Saving"); // Return 400 if update fails
@@ -139,6 +141,9 @@ public class AuctionsController : ControllerBase
         // TODO: Check Seller == username
         // Delete the data from DB
         _context.Auctions.Remove(auction); // SQL: DELETE FROM Auctions WHERE Id = @Id
+
+        //just populate the auctiondeleted and convert guid to string
+        await _publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() });
 
         var results = await _context.SaveChangesAsync() > 0; // SQL: COMMIT if rows affected
 
