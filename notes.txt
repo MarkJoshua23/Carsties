@@ -51,3 +51,24 @@
 >the client will contact identity directly with auth code, client id, secrets
 >identity will return access token to client
 >use token to access services
+
+
+===after making identity server auth====
+>it only allows user to access the protected webpage of identity server
+>cookie based auth
+>it doesnt include api or apps outside the identity server
+>thats why after identity server auth, it will request a token that will be given to the client to access apis
+
+Here’s how the flow works when you use IdentityServer with a separate authentication server:
+
+Step 1: User Accesses Your Web App
+A user opens your web app (which could be a React, Angular, or any other frontend app).
+The web app wants to authenticate the user to verify their identity, so it redirects the user to the IdentityServer (which is the authentication server).
+Step 2: User Logs In via IdentityServer
+The user logs in on IdentityServer (the separate server). This could be a simple login form or something more complex, depending on the flow (password-based login, social login, etc.).
+If the login is successful, IdentityServer will issue an authentication token (usually an ID token and an access token), and the user will be redirected back to the original web app with these tokens.
+Step 3: User is Redirected Back to Web App
+After successful authentication, the user is redirected back to your web app, along with the tokens.
+Your web app (or frontend) can now use these tokens to access protected resources like an API, or even personalize the user experience, because the token confirms the user's identity.
+Step 4: Accessing the Protected API (if applicable)
+If your web app needs to make calls to a protected API (for example, to retrieve user-specific data), it can send the access token in the request headers (e.g., in the Authorization header) to authenticate the user.

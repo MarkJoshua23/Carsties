@@ -8,5 +8,7 @@
 >go to identity directory in terminal and dotnet ef migrations add "InitialCreate" -o Data/Migrations
 >make a register page, copy the namespace and model from login
 >make sure to use allowanonymous attribute in register to allow anyone to access the register page
+>make a registerviewmodel as a model for the values given by the users and put required attribute
 >use bindproperty to bind frontend props to the viewmodel
->make a get endpoint that will assign the returnurl and return the page
+>make a get endpoint that will assign the returnurl and return the register page
+>make a post that will receive the form items and register the user based on the credentials given
