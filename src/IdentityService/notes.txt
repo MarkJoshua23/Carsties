@@ -6,3 +6,5 @@
 >remove the if else seeding in seeddata and just put SeedData.EnsureSeedData(app);
 >in seeddata cs click the using and click the lightbulb
 >go to identity directory in terminal and dotnet ef migrations add "InitialCreate" -o Data/Migrations
+>make a register page, copy the namespace and model from login
+>make sure to use allowanonymous attribute in register to allow anyone to access the register page
