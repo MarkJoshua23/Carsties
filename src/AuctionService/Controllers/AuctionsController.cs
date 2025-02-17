@@ -37,7 +37,7 @@ public class AuctionsController : ControllerBase
     // List<AuctionDto>, meaning it will return a list of AuctionDto objects.
     public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string date)//to know which data to send
     {
-        //asqueryable so we can still manipulate and query after its ordered
+        //asqueryable so we can linq, still manipulate and query after its ordered
         var query = _context.Auctions.OrderBy(x => x.Item.Make).AsQueryable();
 
         if (!string.IsNullOrEmpty(date))
