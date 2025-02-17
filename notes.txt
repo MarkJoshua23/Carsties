@@ -38,3 +38,16 @@
 >map the service bus dto to local dto if necessary
 >or you can just make a Entity object like new instance of entity replacing the contents with dto content
 >add the retry feature in the program cs masstransit service
+
+====Identity server====
+>identity store user data
+>user use client(the webapp)
+>client will redirect the browser to the identity server
+>the request includes client ID, redirect URL(the homepage after logging in), response type, etc
+>identity verifies u based on client id, if no session then u need to login
+>if you have session then it will just return the token
+>if not, then you need to login then identity will pass auth code to browser
+>identity calls the redirect url provided to the client
+>the client will contact identity directly with auth code, client id, secrets
+>identity will return access token to client
+>use token to access services
