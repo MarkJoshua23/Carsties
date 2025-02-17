@@ -1,0 +1,8 @@
+>replace the sqlite in csproj to postgres package
+>replace the https is launchsettings to http
+>replace the defaultstring in appsettings to "DefaultConnection": "Server=localhost;Port=5432;Username=postgres;Password=postgrespw;Database=identity"
+>replace sqlite in hostingextension to UseNpgsql
+>put SameSite = SameSiteMode.Lax; to prevent login issue in hostingextension
+>remove the if else seeding in seeddata and just put SeedData.EnsureSeedData(app);
+>in seeddata cs click the using and click the lightbulb
+>go to identity directory in terminal and dotnet ef migrations add "InitialCreate" -o Data/Migrations
