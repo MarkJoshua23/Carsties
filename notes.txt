@@ -72,3 +72,15 @@ After successful authentication, the user is redirected back to your web app, al
 Your web app (or frontend) can now use these tokens to access protected resources like an API, or even personalize the user experience, because the token confirms the user's identity.
 Step 4: Accessing the Protected API (if applicable)
 If your web app needs to make calls to a protected API (for example, to retrieve user-specific data), it can send the access token in the request headers (e.g., in the Authorization header) to authenticate the user.
+
+===AUTH FLOW===
+=> register 
+=> user is stored in identity server db 
+=> identity will redirect to login page 
+=> user login and redirect to the client with the authorization code
+=> client request token using the auth code(happening in the background)
+
+
+====after registering====
+>identity is deafult using cookie based auth
+>we need to make it token based to use it to request apis

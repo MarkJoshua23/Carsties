@@ -12,3 +12,11 @@
 >use bindproperty to bind frontend props to the viewmodel
 >make a get endpoint that will assign the returnurl and return the register page
 >make a post that will receive the form items and register the user based on the credentials given
+
+===issuing token to client using password grant====
+>go to config 
+>rename apiscope and put description
+>remove the sample clients : m2m, etc
+>make a sample postman client
+>request token in postman in xxx urlencoded
+>include the fields needed like username password etc.
