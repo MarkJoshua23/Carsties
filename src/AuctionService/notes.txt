@@ -27,3 +27,12 @@
 >make migrations after the outbox is added to dbcontext|||dotnet ef migrations add Outbox ==> in the service root directory
 >modify the controller for outbox
 >MassTransit only publishes events from the Outbox AFTER the transaction commits.
+
+
+===for auth api====
+>install microsoft.aspnetcore.authentication.jwtbearer to the resource server
+>add the service for authentication
+>add the authentication as middleware
+>add the connectionstring in appsettings
+>add [Authorize] in protected endpoints like put delete post
+

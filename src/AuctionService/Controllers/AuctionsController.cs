@@ -6,6 +6,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,13 +74,15 @@ public class AuctionsController : ControllerBase
         return _mapper.Map<AuctionDto>(auction); // Map auction entity to AuctionDto
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto createAuctionDto)
     {
         // Map the DTO to the parent entity, the DB with no FK
         var auction = _mapper.Map<Auction>(createAuctionDto); // SQL: INSERT INTO Auctions (fields) VALUES (...)
-        // TODO: Add current user as seller
-        auction.Seller = "test"; // Example hardcoded seller
+
+        //get the name from the jwt claims
+        auction.Seller = User.Identity.Name;
 
         // Add the data from client
         _context.Auctions.Add(auction); // SQL: INSERT INTO Auctions (fields)
@@ -104,6 +107,7 @@ public class AuctionsController : ControllerBase
         // SQL: RETURN 201 Created, location header with new auction Id
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateAuction(Guid id, UpdateAuctionDto updateAuctionDto)
     {
@@ -112,7 +116,9 @@ public class AuctionsController : ControllerBase
 
         if (auction == null) return NotFound(); // Return 404 if auction is not found
 
-        // TODO: Check Seller == username
+        //Check Seller == username so u can only edit your own item
+        if (auction.Seller != User.Identity.Name) return Forbid();
+
         // If updateAuctionDto.Make is NOT null: use the new value from updateAuctionDto
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make; // SQL: UPDATE Item SET Make = @Make WHERE Id = @Id
         auction.Item.Model = updateAuctionDto.Model ?? auction.Item.Model; // Same for Model, Color, etc.
@@ -130,6 +136,7 @@ public class AuctionsController : ControllerBase
         return Ok(results); // Return 200 with the result
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAuction(Guid id)
     {
@@ -138,7 +145,11 @@ public class AuctionsController : ControllerBase
 
         if (auction == null) return NotFound(); // Return 404 if auction is not found
 
-        // TODO: Check Seller == username
+
+        //Check Seller == username so u can only delete your own item
+
+        if (auction.Seller != User.Identity.Name) return Forbid();
+
         // Delete the data from DB
         _context.Auctions.Remove(auction); // SQL: DELETE FROM Auctions WHERE Id = @Id
 

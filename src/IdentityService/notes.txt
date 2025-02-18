@@ -27,3 +27,6 @@
 >make your own claims
 >add the claims you made and the existing claims in identity server
 >put the AddProfileService<CustomProfileService>(); in hostingextensions
+
+====AFter identity server is finished, set auth in apis====
+install microsoft.aspnetcore.authentication.jwtbearer to the resource server

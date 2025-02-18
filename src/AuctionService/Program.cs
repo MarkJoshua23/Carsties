@@ -2,6 +2,7 @@ using AuctionService.Consumers;
 using AuctionService.Data;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,19 @@ builder.Services.AddMassTransit(x =>
         cfg.ConfigureEndpoints(context);
     });
 });
+//authentcation
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //put the authority ro the identity server we made
+    //ASP.NET sends the token to IdentityServer to verify if it’s valid
+    options.Authority = "http://localhost:5000";
+    //to allow http
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters.ValidateAudience = false;
+
+    // Maps the 'username' claim to User.Identity.Name
+    options.TokenValidationParameters.NameClaimType = "username";
+});
 
 
 var app = builder.Build();
@@ -45,6 +59,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //Middlewares
 
+//make sure authentication comes before authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
