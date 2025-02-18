@@ -20,3 +20,10 @@
 >make a sample postman client
 >request token in postman in xxx urlencoded
 >include the fields needed like username password etc.
+>request for access token
+>the initial jwt dont include the claims so u need to add it
+>make a customprofile in services directory to add additional details in jwt
+>inject usermanager to get the user details and existing claims
+>make your own claims
+>add the claims you made and the existing claims in identity server
+>put the AddProfileService<CustomProfileService>(); in hostingextensions

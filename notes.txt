@@ -52,6 +52,7 @@
 >identity will return access token to client
 >use token to access services
 
+> IMPORTANT!!! client is the app, so if theres one web/app then theres one client, its not per user
 
 ===after making identity server auth====
 >it only allows user to access the protected webpage of identity server
@@ -78,9 +79,6 @@ If your web app needs to make calls to a protected API (for example, to retrieve
 => user is stored in identity server db 
 => identity will redirect to login page 
 => user login and redirect to the client with the authorization code
-=> client request token using the auth code(happening in the background)
+=> client/website/app request token using the auth code(happening in the background)
 
-
-====after registering====
->identity is deafult using cookie based auth
->we need to make it token based to use it to request apis
+>REMEMBER!!!! client cant senf a token request if not authenticated/loggedin
