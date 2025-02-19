@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     //put the authority ro the identity server we made
     //ASP.NET sends the token to IdentityServer to verify if it’s valid
-    options.Authority = "http://localhost:5000";
+    options.Authority = builder.Configuration["IdentityServiceUrl"];
     //to allow http
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters.ValidateAudience = false;

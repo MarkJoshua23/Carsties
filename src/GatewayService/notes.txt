@@ -2,3 +2,19 @@
 >remove https iis server
 >install yarp.reverseproxy, microsoft.aspnetcore.authentication.jwtbearer
 >add reverseproxy tp the services in program cs
+>modufy the appsettings to onclude te configuration
+==FLOW===
+=>gateway look at the route of the request
+=>look at the route it will match in the config
+=>look if it needs authentication
+=>look at the cluster of the route based on config
+=>send the request to the cluster route
+===appsettings config=====
+
+>MATCH=>path == the route that is use to request in the gateway
+>MATCH=>method == methods allowed, dont include if you want to allow all methods, "Methods": ["GET"] means only get is allowed
+>pathpattern == modifies the path
+>cluster == server destination
+
+>authenticate the gateway to the identity server
+>separate the paths of the auction server, one for path that doesnt need authentication like get, and other for write
