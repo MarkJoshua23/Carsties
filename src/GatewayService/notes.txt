@@ -13,7 +13,7 @@
 
 >MATCH=>path == the route that is use to request in the gateway
 >MATCH=>method == methods allowed, dont include if you want to allow all methods, "Methods": ["GET"] means only get is allowed
->pathpattern == modifies the path
+>TRANSFORM=>pathpattern == modifies the path so its valid when requesting to the servers
 >cluster == server destination
 
 >authenticate the gateway to the identity server
