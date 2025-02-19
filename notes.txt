@@ -84,3 +84,14 @@ If your web app needs to make calls to a protected API (for example, to retrieve
 >REMEMBER!!!! client cant senf a token request if not authenticated/loggedin
 ====AFter identity server is finished, set auth in apis====
 install microsoft.aspnetcore.authentication.jwtbearer to the resource server
+
+===gateway====
+>single access point to backend services
+>so client only need to know one url
+>security
+>url rewriting
+>load balancing
+>caching
+>using reverse proxy
+>reverse proxy => receives the request from the client through the internet and redistribute it to servers
+>dotnet new web -o src/GatewayService

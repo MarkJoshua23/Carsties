@@ -33,6 +33,7 @@
 >install microsoft.aspnetcore.authentication.jwtbearer to the resource server
 >add the service for authentication
 >add the authentication as middleware
->add the connectionstring in appsettings
+>add the IdentityServiceUrl in appsettings
 >add [Authorize] in protected endpoints like put delete post
+>access claims from json through User.Identity.Name 
 

@@ -1,0 +1,4 @@
+>disable nullable
+>remove https iis server
+>install yarp.reverseproxy, microsoft.aspnetcore.authentication.jwtbearer
+>add reverseproxy tp the services in program cs
