@@ -95,3 +95,14 @@ install microsoft.aspnetcore.authentication.jwtbearer to the resource server
 >using reverse proxy
 >reverse proxy => receives the request from the client through the internet and redistribute it to servers
 >dotnet new web -o src/GatewayService
+
+>just use the identity server to authenticate requests, copy the one from auction service
+
+>that means if:
+localhost:6001 => gateway
+localhost:7001 => auction
+localhost:7002 => service
+
+>then we can just use the gateway instead of two separate url
+localhost:7001/api/auctions => localhost:6001/auctions
+localhost:7002/api/search => localhost:6001/search

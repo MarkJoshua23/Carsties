@@ -18,3 +18,4 @@
 
 >authenticate the gateway to the identity server
 >separate the paths of the auction server, one for path that doesnt need authentication like get, and other for write
+>"AuthorizationPolicy": "default", for auth routes
