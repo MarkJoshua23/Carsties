@@ -134,3 +134,14 @@ localhost:7002/api/search => localhost:6001/search
 
 ===BUILDING===
 >docker compose build auction-svc => manually build image through compose file
+
+====DEBUG A DOCKER CONTAINER====
+>go to debug section
+>create launch.json file
+>choose c#
+>add configuration
+choose:
+-attach to a dotnet process
+-launch c# process
+-.net attach docker
+>chage sourcefile map /src to /app since app is the root of the container built
