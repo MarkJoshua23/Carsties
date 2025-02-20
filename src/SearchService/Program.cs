@@ -28,6 +28,13 @@ builder.Services.AddMassTransit(x =>
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     x.UsingRabbitMq((context, cfg) =>
     {
+        //define the host
+        cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
+        {
+            //define the username, if no env var then default to "guest"
+            host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+        });
         //configure search-auction-created
         //retry the consumer if theres problem like if mongodb doesnt work
         cfg.ReceiveEndpoint("search-auction-created", e =>

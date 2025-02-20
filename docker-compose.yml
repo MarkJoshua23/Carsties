@@ -44,3 +44,26 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+  search-svc:
+    image: markjoshua/search-svc:latest
+    build:
+      context: .
+      dockerfile: src/SearchService/Dockerfile
+    #put overrides to appsettings/launchsettings here
+    environment:
+      #because it defaults to prod so modify it to dev
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+      - RabbitMq__Host=rabbitmq
+      #change localhost to mongodb image name
+      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongodb
+      #change localhost to AuctionService image name
+      - AuctionServiceUrl=http://auction-svc
+    ports:
+      #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+      - 7002:80
+      #services that this image will wait to start
+    depends_on:
+      - mongodb
+      - rabbitmq
