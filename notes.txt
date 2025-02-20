@@ -106,3 +106,8 @@ localhost:7002 => service
 >then we can just use the gateway instead of two separate url
 localhost:7001/api/auctions => localhost:6001/auctions
 localhost:7002/api/search => localhost:6001/search
+
+
+======DOCKER======
+>expose port in only used inside the container
+>for you to connect to the container you need to map the port
