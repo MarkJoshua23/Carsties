@@ -21,3 +21,26 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  auction-svc:
+    image: markjoshua/auction-svc:latest
+    build:
+      context: .
+      dockerfile: src/AuctionService/Dockerfile
+    #put overrides to appsettings/launchsettings here
+    environment:
+      #because it defaults to prod so modify it to dev
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+      - RabbitMq__Host=rabbitmq
+      #change localhost to postgres image name
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=auctions
+      #change localhost to IdentityService image name
+      - IdentityServiceUrl=http://identity-svc
+    ports:
+      #exposes the 80 internal port to 7001 so u can access it to localhost:7001
+      - 7001:80
+      #services that this image will wait to start
+    depends_on:
+      - postgres
+      - rabbitmq

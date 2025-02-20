@@ -111,3 +111,26 @@ localhost:7002/api/search => localhost:6001/search
 ======DOCKER======
 >expose port in only used inside the container
 >for you to connect to the container you need to map the port
+>to build the image go to root where sln is located=> docker build -f src/AuctionService/Dockerfile -t testing123 .
+>-f to specify the filepath of Dockerfile
+>-t to put tag/name
+>"." to specify that the root is here so it can access the sln
+
+
+>at first it will fail to run since the endpoints are still not configured and publishes automatically use production not dev 
+
+===MAKING DOCKER RUN====
+>make sure rabbitmq host is properly defined in program cs of the service
+>add the service to the docker compose 
+>if the image is uploaded to dockerhub make the image name <username>/<imagename>:<tag>
+>build:context: => where does the commands run from , "." means it run from the root
+>environment:  => this will override the appsettings, put the configs, url, env variables here
+>ASPNETCORE_URLS=http://+:80 makes the app listen to port 80 ONLY INTERNALLY, + is wildcard meaning it can be anyhost
+
+===DOCKER NETWORKING===
+> RabbitMq__Host=rabbitmq => this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+>when modifying env urls use the imagename of the image it uses instead of localhost to enable docker networking
+> ex Server=localhost;Port=5432..... => Server=postgres;Port=5432.....
+
+===BUILDING===
+>docker compose build auction-svc => manually build image through compose file
