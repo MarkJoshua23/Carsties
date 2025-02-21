@@ -75,7 +75,7 @@ services:
     #put overrides to appsettings/launchsettings here
     environment:
       #because it defaults to prod so modify it to dev
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
       #change localhost to mongodb image name
       - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=identity
@@ -85,3 +85,17 @@ services:
       #services that this image will wait to start
     depends_on:
       - postgres
+  gateway-svc:
+    image: markjoshua/gateway-svc:latest
+    build:
+      context: .
+      dockerfile: src/GatewayService/Dockerfile
+    #put overrides to appsettings/launchsettings here
+    environment:
+      #it defaults to prod so modify it to appsettings.Docker.json
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      #change localhost to mongodb image name
+    ports:
+      #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+      - 6001:80

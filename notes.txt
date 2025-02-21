@@ -145,3 +145,7 @@ choose:
 -launch c# process
 -.net attach docker
 >chage sourcefile map /src to /app since app is the root of the container built
+
+======Possible errors in docker=============
+>identity server will error that the issuer is invalid
+>to fix ,add modification to hostingextensions
