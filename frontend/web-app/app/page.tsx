@@ -1,11 +1,12 @@
 import Image from "next/image";
+import Listings from "./nav/Listings";
 
 export default function Home() {
+  console.log("server");
+
   return (
-    <div>
-      <h3 className="text-3xl font-semibold">
-        Carsties App
-      </h3>
+    <div className="">
+      <Listings />
     </div>
   );
 }
