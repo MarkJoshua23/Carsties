@@ -1,0 +1,10 @@
+>layout is the root file
+>all components are default to SERVER component 
+>logs in vscode is the server side logs
+>'use client' to make a CLIENT component
+
+====data fetching====
+>.net => next js server => next js client
+>this makes it the browser unaware where does the data comes from since only html is returned and no js, all requests are made in the server
+>server code fetch data even before the component renders and cache it
+>be careful of caching, next wont update the cached data without triggers

@@ -1,4 +1,5 @@
 import React from 'react'
+import AuctionCard from '../nav/AuctionCard';
 
 //this will also cache
 async function getData() {
@@ -16,8 +17,9 @@ export default async function Listings() {
 
   return (
     <div>
-
-        {JSON.stringify(data, null , 2)}
+        {data && data.results.map((auction:any, index:any)=>(
+          <AuctionCard auction={auction} key={index}/>
+        ))}
     </div>
   )
 }
