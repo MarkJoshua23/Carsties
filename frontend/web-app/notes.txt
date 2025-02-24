@@ -20,3 +20,8 @@
 
 ====css=====
 >use absolute to stack a child
+
+====types=====
+> <T> are generics/placeholder not return types
+> use types to have a good intellisense
+> treat types as Models/Dto
