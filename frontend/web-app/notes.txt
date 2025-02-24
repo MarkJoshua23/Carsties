@@ -8,3 +8,11 @@
 >this makes it the browser unaware where does the data comes from since only html is returned and no js, all requests are made in the server
 >server code fetch data even before the component renders and cache it
 >be careful of caching, next wont update the cached data without triggers
+
+====images===
+>next have built in image component that optimizes images
+>configure next config to allow next to display image from specific url
+
+====react-countdown====
+>it calculates the countdown based on the end date provided "auctionEnd" and the current date
+>if it is given fixed target date it will not restart

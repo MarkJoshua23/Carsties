@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
     fetches:{
       fullUrl:true
     }
+  },
+  //config to allow images from url
+  images:{
+    remotePatterns:[
+      {protocol: 'https', hostname: "cdn.pixabay.com"}
+    ]
   }
 };
 
