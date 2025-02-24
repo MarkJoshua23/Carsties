@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import CountdownTimer from './CountdownTimer'
+import CardImage from './CardImage'
 
 type Props ={
     auction: any
@@ -11,17 +12,10 @@ export default function AuctionCard({auction} : Props) {
   //relative so the image will base its scale on the div
   //countdown is absolute so it can be stacked above, since theres no available space bc the image filled all space
   return (
-    <a href="#">
+    <a href="#" className='group'>
       
       <div className="relative w-full bg-gray-200 aspect-[16/10] rounded-lg overflow-hidden">
-        <Image
-        src={auction.imageUrl}
-        alt='image'
-        fill
-        priority
-        className='object-cover'
-        sizes='(max-width: 758px) 100vw, (max-width:1200px) 50vw , 25vw'
-        />
+        <CardImage imageUrl={auction.imageUrl}/>
         <div className='absolute bottom-2 left-2'>
         <CountdownTimer auctionEnd={auction.auctionEnd}/>
         </div>
