@@ -2,6 +2,7 @@
 >all components are default to SERVER component 
 >logs in vscode is the server side logs
 >'use client' to make a CLIENT component
+> you should use Server Components as much as possible and only use Client Components for interactivity like state, effects, and event listeners.
 
 ====data fetching====
 >.net => next js server => next js client
@@ -16,3 +17,6 @@
 ====react-countdown====
 >it calculates the countdown based on the end date provided "auctionEnd" and the current date
 >if it is given fixed target date it will not restart
+
+====css=====
+>use absolute to stack a child

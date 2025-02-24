@@ -9,10 +9,11 @@ type Props ={
 //object cover makes the image cover the aspect ratio and not stretch
 export default function AuctionCard({auction} : Props) {
   //relative so the image will base its scale on the div
+  //countdown is absolute so it can be stacked above, since theres no available space bc the image filled all space
   return (
     <a href="#">
       
-      <div className="relative w-full bg-gray-200 aspect-video rounded-lg overflow-hidden">
+      <div className="relative w-full bg-gray-200 aspect-[16/10] rounded-lg overflow-hidden">
         <Image
         src={auction.imageUrl}
         alt='image'
@@ -21,6 +22,9 @@ export default function AuctionCard({auction} : Props) {
         className='object-cover'
         sizes='(max-width: 758px) 100vw, (max-width:1200px) 50vw , 25vw'
         />
+        <div className='absolute bottom-2 left-2'>
+        <CountdownTimer auctionEnd={auction.auctionEnd}/>
+        </div>
       </div>
       <div className="flex justify-between items-center mt-4">
         <h3 className='text-gray-700 '>
@@ -30,7 +34,7 @@ export default function AuctionCard({auction} : Props) {
           {auction.year}
         </p>
       </div>
-      <CountdownTimer auctionEnd={auction.auctionEnd}/>
+      
     </a>
   )
 }
