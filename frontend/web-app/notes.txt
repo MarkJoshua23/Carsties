@@ -4,6 +4,9 @@
 >'use client' to make a CLIENT component
 > you should use Server Components as much as possible and only use Client Components for interactivity like state, effects, and event listeners.
 
+===server components/functions=====
+>avoid async in server functions, it breaks react
+
 ====data fetching====
 >.net => next js server => next js client
 >this makes it the browser unaware where does the data comes from since only html is returned and no js, all requests are made in the server
@@ -25,3 +28,11 @@
 > <T> are generics/placeholder not return types
 > use types to have a good intellisense
 > treat types as Models/Dto
+
+====packages===
+>flowbite => component library
+>zustand => state management
+>query-string => queries
+
+=====UX=====
+>whenever any filter or sorting criteria change,resets back the pagination to page 1

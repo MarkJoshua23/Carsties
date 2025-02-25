@@ -5,10 +5,11 @@ import { Auction, PagedResult } from "@/types";
 //this will also cache
 //it will promise of return of pagedresult with items including a type of auction
 export async function getData(
-  pageNumber: number = 1
+  pageNumber: number,
+  pageSize: number
 ): Promise<PagedResult<Auction>> {
   const res = await fetch(
-    `http://localhost:6001/search?pageSize=4&pageNumber=${pageNumber}`,
+    `http://localhost:6001/search?pageSize=${pageSize}&pageNumber=${pageNumber}`,
     {
       next: { revalidate: 60 }, // Cache for 60 seconds, then refresh
     }
