@@ -36,3 +36,9 @@
 
 =====UX=====
 >whenever any filter or sorting criteria change,resets back the pagination to page 1
+
+===search/page/size state flow=====
+>a function will update the value of a state, 
+>since the parameter state is in url variable, the url will change
+>useeffect will detect the change in url
+>useeffect will run getdata inside it

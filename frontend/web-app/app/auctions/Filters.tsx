@@ -10,6 +10,7 @@ type Page = {
 const pageSizeButtons = [4, 8, 12];
 //this simply makes the button red if the value of the button === to the value of size clicked
 export default function Filters() {
+  //zustand
   const pageSize = useParamsStore((state) => state.pageSize);
   const setParams = useParamsStore((state) => state.setParams);
   return (
