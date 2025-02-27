@@ -2,10 +2,17 @@ import { create } from "zustand";
 
 //put possible parameters for crud queries
 type State = {
+  //current page
   pageNumber: number;
+  //how many items to display
   pageSize: number;
+
   pageCount: number;
+
+  //sent to api
   searchTerm: string;
+  //displayed value in search bar
+  searchValue: string;
 };
 
 type Actions = {
@@ -13,6 +20,7 @@ type Actions = {
   setParams: (params: Partial<State>) => void;
   //to reset the param
   reset: () => void;
+  setSearchValue: (value: string) => void;
 };
 
 const initialState: State = {
@@ -20,6 +28,7 @@ const initialState: State = {
   pageSize: 12,
   pageCount: 1,
   searchTerm: "",
+  searchValue: "",
 };
 //create is zustand method
 //set is what to use to manipulate the state
@@ -45,4 +54,9 @@ export const useParamsStore = create<State & Actions>()((set) => ({
   },
   //reset the values to initialstate
   reset: () => set(initialState),
+
+  //set the value pf displayed search
+  setSearchValue: (value: string) => {
+    set({ searchValue: value });
+  },
 }));

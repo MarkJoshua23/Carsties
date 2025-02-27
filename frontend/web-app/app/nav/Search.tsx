@@ -5,14 +5,18 @@ import { FaSearch } from "react-icons/fa";
 
 export default function Search() {
   const setParams = useParamsStore((state) => state.setParams);
-  const [value, setValue] = useState("");
+  //this will be for omchange to update the values
+  const setSearchValue = useParamsStore((state) => state.setSearchValue);
+  const searchValue = useParamsStore((state) => state.searchValue);
+
   function onChange(e: any) {
-    setValue(e.target.value);
+    setSearchValue(e.target.value);
   }
+
   //this will trigger re render
   //the getdata will get new data with searchterm since the useffect listens for change in url
   function search() {
-    setParams({ searchTerm: value });
+    setParams({ searchTerm: searchValue });
   }
   return (
     <div className="flex w-[50%] items-center border-2 rounded-full py-2 shadow-sm">
@@ -20,6 +24,7 @@ export default function Search() {
         onKeyDown={(e: any) => {
           if (e.key === "Enter") search();
         }}
+        value={searchValue}
         onChange={onChange}
         type="text"
         placeholder="Search for cars by make, model, or color"
