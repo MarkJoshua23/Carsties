@@ -13,6 +13,7 @@ type State = {
   searchTerm: string;
   //displayed value in search bar
   searchValue: string;
+  orderBy: string;
 };
 
 type Actions = {
@@ -29,6 +30,7 @@ const initialState: State = {
   pageCount: 1,
   searchTerm: "",
   searchValue: "",
+  orderBy: "make",
 };
 //create is zustand method
 //set is what to use to manipulate the state

@@ -4,6 +4,9 @@
 >'use client' to make a CLIENT component
 > you should use Server Components as much as possible and only use Client Components for interactivity like state, effects, and event listeners.
 
+====components====
+>use () in map insted of {} for instant return
+
 ===server components/functions=====
 >avoid async in server functions, it breaks react
 
