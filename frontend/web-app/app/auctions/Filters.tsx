@@ -2,7 +2,8 @@ import { useParamsStore } from "@/hooks/useParamsStore";
 import { Button, ButtonGroup } from "flowbite-react";
 import React from "react";
 import { AiOutlineClockCircle, AiOutlineSortAscending } from "react-icons/ai";
-import { BsFillStopCircleFill } from "react-icons/bs";
+import { BsFillStopCircleFill, BsStopwatchFill } from "react-icons/bs";
+import { GiFinishLine, GiFlame } from "react-icons/gi";
 
 type Page = {
   pageSize: number;
@@ -27,6 +28,23 @@ const orderButtons = [
     value: "new",
   },
 ];
+const filterButtons = [
+  {
+    label: "Live Auctions",
+    icon: GiFlame,
+    value: "live",
+  },
+  {
+    label: "Ending < 6 hours",
+    icon: GiFinishLine,
+    value: "endingSoon",
+  },
+  {
+    label: "Completed",
+    icon: BsStopwatchFill,
+    value: "finished",
+  },
+];
 
 //this simply makes the button red if the value of the button === to the value of size clicked
 export default function Filters() {
@@ -34,6 +52,7 @@ export default function Filters() {
   const pageSize = useParamsStore((state) => state.pageSize);
   const setParams = useParamsStore((state) => state.setParams);
   const orderBy = useParamsStore((state) => state.orderBy);
+  const filterBy = useParamsStore((state) => state.filterBy);
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="">
@@ -41,6 +60,7 @@ export default function Filters() {
         <Button.Group>
           {orderButtons.map(({ label, icon: Icon, value }) => (
             //each button have value each so it will change color based on the orderBy state
+            //icon has a component and : means its destructed to Icon component so Icon now hold the icon value
             <Button
               key={value}
               onClick={() => setParams({ orderBy: value })}
@@ -52,6 +72,25 @@ export default function Filters() {
           ))}
         </Button.Group>
       </div>
+
+      <div className="">
+        <span className="uppercase text-sm text-gray-500 mr-2">Filter by</span>
+        <Button.Group>
+          {filterButtons.map(({ label, icon: Icon, value }) => (
+            //each button have value each so it will change color based on the orderBy state
+            //icon has a component and : means its destructed to Icon component so Icon now hold the icon value
+            <Button
+              key={value}
+              onClick={() => setParams({ filterBy: value })}
+              color={`${filterBy === value ? "red" : "gray"}`}
+            >
+              <Icon className="mr-3 h-4 w-4" />
+              {label}
+            </Button>
+          ))}
+        </Button.Group>
+      </div>
+
       <div>
         <span className="uppercase text-sm text-gray-500 mr-2">Page Size</span>
         <Button.Group>

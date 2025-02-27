@@ -14,6 +14,7 @@ type State = {
   //displayed value in search bar
   searchValue: string;
   orderBy: string;
+  filterBy: string;
 };
 
 type Actions = {
@@ -31,6 +32,7 @@ const initialState: State = {
   searchTerm: "",
   searchValue: "",
   orderBy: "make",
+  filterBy: "live",
 };
 //create is zustand method
 //set is what to use to manipulate the state
