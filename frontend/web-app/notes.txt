@@ -45,3 +45,7 @@
 >since the parameter state is in url variable, the url will change
 >useeffect will detect the change in url
 >useeffect will run getdata inside it
+
+
+===auth js====
+>follow documentation
