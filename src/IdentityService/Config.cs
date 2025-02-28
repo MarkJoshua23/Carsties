@@ -47,7 +47,8 @@ public static class Config
                 AllowedScopes =  { "openid", "profile", "auctionApp" },
                 //the default is 1 hour
                 //make it one month
-                AccessTokenLifetime = 3600*24*30
+                AccessTokenLifetime = 3600*24*30,
+                AlwaysIncludeUserClaimsInIdToken=true
             }
         };
 }
