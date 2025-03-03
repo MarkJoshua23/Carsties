@@ -9,6 +9,7 @@ export default function () {
     <Button
       outline
       onClick={() =>
+        //prompt login is only for dev, it disregard if theres a session token and still prompt theuser oo signin if the button is clicked even if
         signIn("id-server", { redirectTo: "/" }, { prompt: "login" })
       }
     >

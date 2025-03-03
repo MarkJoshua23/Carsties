@@ -2,6 +2,7 @@ import NextAuth, { Profile } from "next-auth";
 import { OIDCConfig } from "next-auth/providers";
 import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6";
 
+//copy this from auth js documentation
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     //where is the user information located

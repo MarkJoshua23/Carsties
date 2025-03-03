@@ -49,3 +49,6 @@
 
 ===auth js====
 >follow documentation
+>modify auth ts to import duende identity server and providers
+>make sure issuer is accurate
+>
