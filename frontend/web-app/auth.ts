@@ -30,20 +30,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async authorized({ auth }) {
             return !!auth;
         },
-        //put username from profile to token
-        async jwt({ token, profile }) {
-            console.log({ token, profile });
 
+        async jwt({ token, profile, account }) {
+            console.log({ token, profile });
+            //put access token from account to token to use that to auth to api
+            if (account && account.access_token) {
+                token.accessToken = account.access_token;
+            }
+
+            //put username from profile to token
             if (profile) {
                 token.username = profile.username;
             }
             return token;
         },
 
-        //username from token to session so frontend can use it
         async session({ session, token }) {
+            //accesstoken from token to session so frontend can send req to apis
+            //username from token to session so frontend can use it
             if (token) {
                 session.user.username = token.username;
+                session.accessToken = token.accessToken;
             }
             return session;
         },

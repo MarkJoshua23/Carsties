@@ -10,3 +10,20 @@ export async function getData(query: string): Promise<PagedResult<Auction>> {
     //get the respose from res
     return res.json();
 }
+
+export async function updateAuctionTest() {
+    const data = {
+        mileage: Math.floor(Math.random() * 10000) + 1,
+    };
+
+    //gateway server
+    const res = await fetch("http://localhost:6001/auctions", {
+        method: "PUT",
+        headers: {},
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) return { status: res.status, message: res.statusText };
+
+    return res.json();
+}

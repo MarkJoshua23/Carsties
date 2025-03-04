@@ -7,6 +7,7 @@ declare module "next-auth" {
             //add custom session value to user so u have session.user.username
             username: string;
         } & DefaultSession["user"];
+        accessToken: string;
     }
     interface Profile {
         username: string;
@@ -18,5 +19,6 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
     interface JWT {
         username: string;
+        accessToken: string;
     }
 }
