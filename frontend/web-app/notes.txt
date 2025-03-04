@@ -55,6 +55,7 @@
 >you need to callback jwt to access profile where username is defined in identity server
 >IMPORTANT!!!!! 
 NextAuth only exposes session to the frontend, you need to pass username from the ID Token (profile) → NextAuth Token (token) → Session (session.user).
+>auth infos like access token, username, etc can only be accessed once when logged in so it should be immediately saved to session so client can use it
 
 ===routing=====
 >next is file based routing

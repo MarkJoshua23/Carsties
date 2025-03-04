@@ -1,4 +1,5 @@
 "use server";
+import { auth } from "@/auth";
 //put use server to specify its a server functions
 import { Auction, PagedResult } from "@/types";
 
@@ -16,14 +17,22 @@ export async function updateAuctionTest() {
         mileage: Math.floor(Math.random() * 10000) + 1,
     };
 
+    const session = await auth();
     //gateway server
-    const res = await fetch("http://localhost:6001/auctions", {
-        method: "PUT",
-        headers: {},
-        body: JSON.stringify(data),
-    });
+    const res = await fetch(
+        "http://localhost:6001/auctions/6a5011a1-fe1f-47df-9a32-b5346b289391",
+        {
+            method: "PUT",
+            headers: {
+                "Content-type": "application/json",
+                //dont forget the space after bearer
+                Authorization: "Bearer " + session?.accessToken,
+            },
+            body: JSON.stringify(data),
+        }
+    );
 
     if (!res.ok) return { status: res.status, message: res.statusText };
 
-    return res.json();
+    return res.statusText;
 }
