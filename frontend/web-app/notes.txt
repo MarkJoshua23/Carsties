@@ -55,3 +55,21 @@
 >you need to callback jwt to access profile where username is defined in identity server
 >IMPORTANT!!!!! 
 NextAuth only exposes session to the frontend, you need to pass username from the ID Token (profile) → NextAuth Token (token) → Session (session.user).
+
+===routing=====
+>next is file based routing
+>layout tsx is the root of each directory it has children inside which is the page tsx
+>treat layout as component with OUTLET so it allows children to be rendered inside 
+>page tsx is the webpage that appear when you go to that route
+>meaning:
+app
+ ┣ child(folder)
+ ┃ ┣ page.tsx      ===>  '/child'
+ ┃ ┗ grandchild(folder)
+ ┃   ┗ page.tsx    ===>  '/child/grandchild'
+ ┗ page.tsx        ===>  '/'
+
+>route security can be modified in middleware.ts
+>then put authorized in the auth ts callbacks, so it will always redirect to login page if not auth
+>to override the default login page when a route is secured make a api/auth/signin/page.tsx
+ 

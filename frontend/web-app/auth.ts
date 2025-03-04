@@ -26,6 +26,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     //to see jwt infos
     callbacks: {
+        //to enable secured routes
+        async authorized({ auth }) {
+            return !!auth;
+        },
         //put username from profile to token
         async jwt({ token, profile }) {
             console.log({ token, profile });
