@@ -51,4 +51,7 @@
 >follow documentation
 >modify auth ts to import duende identity server and providers
 >make sure issuer is accurate
->
+>by default only name is available in the token
+>you need to callback jwt to access profile where username is defined in identity server
+>IMPORTANT!!!!! 
+NextAuth only exposes session to the frontend, you need to pass username from the ID Token (profile) → NextAuth Token (token) → Session (session.user).
