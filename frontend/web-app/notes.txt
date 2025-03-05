@@ -56,6 +56,9 @@
 >IMPORTANT!!!!! 
 NextAuth only exposes session to the frontend, you need to pass username from the ID Token (profile) → NextAuth Token (token) → Session (session.user).
 >auth infos like access token, username, etc can only be accessed once when logged in so it should be immediately saved to session so client can use it
+>only access session/ api in server functions for more security
+
+
 
 ===routing=====
 >next is file based routing
@@ -69,6 +72,10 @@ app
  ┃ ┗ grandchild(folder)
  ┃   ┗ page.tsx    ===>  '/child/grandchild'
  ┗ page.tsx        ===>  '/'
+
+ >you can dynamic route by [] 
+ >ex. auctions/[Id]/page.tsx
+  can be auctions/create/1/page.tsx, auctions/details/2/page.tsx, etc.
 
 >route security can be modified in middleware.ts
 >then put authorized in the auth ts callbacks, so it will always redirect to login page if not auth

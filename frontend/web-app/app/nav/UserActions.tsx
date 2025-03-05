@@ -18,17 +18,17 @@ type Props = {
     user: User;
 };
 export default function UserActions({ user }: Props) {
-    const router = useRouter;
+    const router = useRouter();
     return (
         <Dropdown inline label={`Welcome ${user.name}`}>
             <DropdownItem icon={HiUser}>
                 <Link href="/">My Auctions</Link>
             </DropdownItem>
             <DropdownItem icon={AiFillTrophy}>
-                <Link href="/">AUctions won</Link>
+                <Link href="/">Auctions won</Link>
             </DropdownItem>
             <DropdownItem icon={AiFillCar}>
-                <Link href="/">Sell my car</Link>
+                <Link href="/auctions/create">Sell my car</Link>
             </DropdownItem>
             <DropdownItem icon={HiCog}>
                 <Link href="/session">Session (dev only) </Link>
