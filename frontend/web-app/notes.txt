@@ -80,4 +80,7 @@ app
 >route security can be modified in middleware.ts
 >then put authorized in the auth ts callbacks, so it will always redirect to login page if not auth
 >to override the default login page when a route is secured make a api/auth/signin/page.tsx
+
+===form=====
+>npm install react-hook-form react-datepicker
  
