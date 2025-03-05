@@ -83,4 +83,5 @@ app
 
 ===form=====
 >npm install react-hook-form react-datepicker
+> in form 'name' will be the key of values so make it match to the name needed for api
  
