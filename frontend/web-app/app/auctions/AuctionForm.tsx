@@ -3,6 +3,7 @@ import { Button, TextInput } from "flowbite-react";
 import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
+import DateInput from "../components/DateInput";
 
 export default function AuctionForm() {
     const {
@@ -15,6 +16,7 @@ export default function AuctionForm() {
         mode: "onTouched",
     });
 
+    //set focus on make
     useEffect(() => {
         setFocus("make");
     }, [setFocus]);
@@ -29,6 +31,7 @@ export default function AuctionForm() {
         <form
             action=""
             className="flex flex-col mt-3"
+            //transfer field values to onsubmit
             onSubmit={handleSubmit(onSubmit)}
         >
             <Input
@@ -82,11 +85,12 @@ export default function AuctionForm() {
                     type="number"
                     rules={{ required: "Reserve Price is required" }}
                 />
-                <Input
+                <DateInput
                     label="Aution end date/time"
                     name="auctionEnd"
+                    dateFormat="dd MMMM yyyy h:mm a"
+                    showTimeSelect
                     control={control}
-                    type="date"
                     rules={{ required: "Auction end date is required" }}
                 />
             </div>

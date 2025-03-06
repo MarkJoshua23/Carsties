@@ -21,6 +21,7 @@ export default function Input(props: Props) {
             <TextInput
                 {...props}
                 {...field}
+                //type can be number/ date but default to text
                 type={props.type || "text"}
                 placeholder={props.label}
                 //dynamic colors based on validation
