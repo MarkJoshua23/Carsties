@@ -4,8 +4,11 @@ import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import DateInput from "../components/DateInput";
+import { createAuction } from "../actions/auctionActions";
+import { useRouter } from "next/navigation";
 
 export default function AuctionForm() {
+    const router = useRouter();
     const {
         control,
         handleSubmit,
@@ -22,8 +25,18 @@ export default function AuctionForm() {
     }, [setFocus]);
 
     //fieldvalues is from react form package
-    function onSubmit(data: FieldValues) {
+    async function onSubmit(data: FieldValues) {
         console.log(data);
+        try {
+            //pass the fieldvalues
+            const res = await createAuction(data);
+            if (res.error) {
+                throw new Error(res.error);
+            }
+            router.push(`/auctions/details/${res.id}`);
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         //use handleSunmit for react form
@@ -102,7 +115,7 @@ export default function AuctionForm() {
                 <Button
                     isProcessing={isSubmitting}
                     //so you can only submit if all field are valid
-                    // disabled={!isValid}
+                    disabled={!isValid}
                     type="submit"
                     outline
                     color="success"

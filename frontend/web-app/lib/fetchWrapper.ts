@@ -7,7 +7,7 @@ const baseUrl = "http://localhost:6001/";
 async function get(url: string) {
     const requestOptions = {
         method: "GET",
-        headers: {},
+        headers: await getHeaders(),
     };
 
     const response = await fetch(baseUrl + url, requestOptions);
@@ -17,8 +17,29 @@ async function get(url: string) {
 async function post(url: string, body: {}) {
     const requestOptions = {
         method: "POST",
-        headers: {},
+        headers: await getHeaders(),
         body: JSON.stringify(body),
+    };
+
+    const response = await fetch(baseUrl + url, requestOptions);
+
+    return handleResponse(response);
+}
+async function put(url: string, body: {}) {
+    const requestOptions = {
+        method: "PUT",
+        headers: await getHeaders(),
+        body: JSON.stringify(body),
+    };
+
+    const response = await fetch(baseUrl + url, requestOptions);
+
+    return handleResponse(response);
+}
+async function del(url: string, body: {}) {
+    const requestOptions = {
+        method: "DELETE",
+        headers: await getHeaders(),
     };
 
     const response = await fetch(baseUrl + url, requestOptions);
@@ -28,6 +49,7 @@ async function post(url: string, body: {}) {
 
 async function handleResponse(response: Response) {
     const text = await response.text();
+    //parse text if its not null or empty string
     const data = text && JSON.parse(text);
 
     if (response.ok) {
@@ -37,7 +59,8 @@ async function handleResponse(response: Response) {
             status: response.status,
             message: response.statusText,
         };
-        return error;
+        //return error as an object
+        return { error };
     }
 }
 
@@ -50,8 +73,12 @@ async function getHeaders() {
     if (session?.accessToken) {
         headers.Authorization = "Bearer " + session.accessToken;
     }
+    return headers;
 }
 
 export const fetchWrapper = {
     get,
+    post,
+    put,
+    del,
 };
