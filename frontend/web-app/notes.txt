@@ -85,3 +85,7 @@ app
 >npm install react-hook-form react-datepicker
 > in form 'name' will be the key of values so make it match to the name needed for api
  
+
+
+====fetch====
+> you can already access id through response.id as long as the Response is already .json() or JSON.parse()
