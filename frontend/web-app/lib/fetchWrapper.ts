@@ -11,7 +11,6 @@ async function get(url: string) {
     };
 
     const response = await fetch(baseUrl + url, requestOptions);
-
     return handleResponse(response);
 }
 async function post(url: string, body: {}) {
@@ -41,7 +40,8 @@ async function del(url: string) {
         method: "DELETE",
         headers: await getHeaders(),
     };
-
+    const fullUrl = baseUrl + url;
+    console.log("DELETE request to:", fullUrl);
     const response = await fetch(baseUrl + url, requestOptions);
 
     return handleResponse(response);
@@ -51,8 +51,9 @@ async function handleResponse(response: Response) {
     const text = await response.text();
     //parse text if its not null or empty string
     const data = text && JSON.parse(text);
-
+    console.log(response);
     if (response.ok) {
+        // console.log(response);
         return data || response.statusText;
     } else {
         const error = {

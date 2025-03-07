@@ -4,6 +4,12 @@
 >'use client' to make a CLIENT component
 > you should use Server Components as much as possible and only use Client Components for interactivity like state, effects, and event listeners.
 
+=====USEFUL TIPS=====
+>only use async await in server functions
+>in client/ 'use client', you should use .then .catch .finally
+
+
+
 ====components====
 >use () in map insted of {} for instant return
 
