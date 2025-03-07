@@ -4,17 +4,28 @@ import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import DateInput from "../components/DateInput";
-import { createAuction } from "../actions/auctionActions";
-import { useRouter } from "next/navigation";
+import {
+    createAuction,
+    updateAuction,
+    updateAuctionTest,
+} from "../actions/auctionActions";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Auction } from "@/types";
 
-export default function AuctionForm() {
+type Props = {
+    auction?: Auction;
+};
+
+export default function AuctionForm({ auction }: Props) {
     const router = useRouter();
+    const pathName = usePathname();
     const {
         control,
         handleSubmit,
         setFocus,
         formState: { isSubmitting, isValid, isDirty, errors },
+        reset,
     } = useForm({
         //validation happen on touch instead of after submitting
         mode: "onTouched",
@@ -22,6 +33,12 @@ export default function AuctionForm() {
 
     //set focus on make
     useEffect(() => {
+        //if theres a auction data passed then extract the editable properties
+        if (auction) {
+            const { make, model, color, mileAge, year } = auction;
+            //give the value to fields so theres an initial value
+            reset({ make, model, color, mileAge, year });
+        }
         setFocus("make");
     }, [setFocus]);
 
@@ -29,12 +46,27 @@ export default function AuctionForm() {
     async function onSubmit(data: FieldValues) {
         console.log(data);
         try {
-            //pass the fieldvalues
-            const res = await createAuction(data);
+            let id = "";
+            let res;
+            //if its create
+            if (pathName === "/auctions/create") {
+                //pass the fieldvalues to create function
+                //save it to res so we know whats the result
+                res = await createAuction(data);
+                id = res.id;
+            } else {
+                //if theres auction recieved then its edit then update
+                if (auction) {
+                    res = await updateAuction(data, auction.id);
+                    //so we we can push to the edited car using the id
+                    id = auction.id;
+                }
+            }
+
             if (res.error) {
                 throw res.error;
             }
-            router.push(`/auctions/details/${res.id}`);
+            router.push(`/auctions/details/${id}`);
         } catch (error: any) {
             toast.error(error.status + " " + error.message);
         }
@@ -66,7 +98,6 @@ export default function AuctionForm() {
                 control={control}
                 rules={{ required: "Color is required" }}
             />
-
             <div className="grid grid-cols-2 gap-3">
                 <Input
                     label="Year"
@@ -83,32 +114,41 @@ export default function AuctionForm() {
                     rules={{ required: "Mileage is required" }}
                 />
             </div>
+            {
+                //these are only available for create and cant be edited
+                pathName === "/auctions/create" && (
+                    <>
+                        <Input
+                            label="Image URL"
+                            name="imageUrl"
+                            control={control}
+                            rules={{ required: "Image URL is required" }}
+                        />
 
-            <Input
-                label="Image URL"
-                name="imageUrl"
-                control={control}
-                rules={{ required: "Image URL is required" }}
-            />
-
-            <div className="grid grid-cols-2 gap-3">
-                <Input
-                    label="Reserve Price (Enter 0 if no reserve)"
-                    name="reservePrice"
-                    control={control}
-                    type="number"
-                    rules={{ required: "Reserve Price is required" }}
-                />
-                <DateInput
-                    label="Aution end date/time"
-                    name="auctionEnd"
-                    dateFormat="dd MMMM yyyy h:mm a"
-                    showTimeSelect
-                    control={control}
-                    rules={{ required: "Auction end date is required" }}
-                />
-            </div>
-
+                        <div className="grid grid-cols-2 gap-3">
+                            <Input
+                                label="Reserve Price (Enter 0 if no reserve)"
+                                name="reservePrice"
+                                control={control}
+                                type="number"
+                                rules={{
+                                    required: "Reserve Price is required",
+                                }}
+                            />
+                            <DateInput
+                                label="Aution end date/time"
+                                name="auctionEnd"
+                                dateFormat="dd MMMM yyyy h:mm a"
+                                showTimeSelect
+                                control={control}
+                                rules={{
+                                    required: "Auction end date is required",
+                                }}
+                            />
+                        </div>
+                    </>
+                )
+            }
             <div className="flex justify-between">
                 <Button outline color="gray">
                     Cancel

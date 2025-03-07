@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { fetchWrapper } from "@/lib/fetchWrapper";
 //put use server to specify its a server functions
 import { Auction, PagedResult } from "@/types";
+import { revalidatePath } from "next/cache";
 import { FieldValues } from "react-hook-form";
 
 //this will also cache
@@ -28,4 +29,14 @@ export async function createAuction(data: FieldValues) {
 
 export async function getDetailedViewData(id: string): Promise<Auction> {
     return await fetchWrapper.get(`auctions/${id}`);
+}
+
+export async function updateAuction(data: FieldValues, id: string) {
+    const res = await fetchWrapper.put(`auctions/${id}`, data);
+    revalidatePath(`/auctions${id}`);
+    return res;
+}
+
+export async function deleteAuction(id: string) {
+    return await fetchWrapper.del(`/auctions/${id}`);
 }

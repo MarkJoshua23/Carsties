@@ -36,7 +36,7 @@ async function put(url: string, body: {}) {
 
     return handleResponse(response);
 }
-async function del(url: string, body: {}) {
+async function del(url: string) {
     const requestOptions = {
         method: "DELETE",
         headers: await getHeaders(),

@@ -4,13 +4,22 @@ import React from "react";
 import CountdownTimer from "../../CountdownTimer";
 import CardImage from "../../CardImage";
 import DetailedSpecs from "./DetailedSpecs";
+import EditButton from "./EditButton";
+import { getCurrentUser } from "@/app/actions/authActions";
 
 export default async function Details({ params }: { params: { id: string } }) {
-    const data = await getDetailedViewData(params.id);
+    const { id } = await params;
+    const data = await getDetailedViewData(id);
+    const user = await getCurrentUser();
     return (
         <div className="">
             <div className="flex justify-between">
-                <Heading title={`${data.make} ${data.model}`} />
+                <div className="flex items-center gap-3">
+                    <Heading title={`${data.make} ${data.model}`} />
+                    {user?.username === data.seller && (
+                        <EditButton id={data.id} />
+                    )}
+                </div>
                 <div className="flex gap-3">
                     <h3 className="text-2xl font-semibold">Time remaining: </h3>
                     <CountdownTimer auctionEnd={data.auctionEnd} />
