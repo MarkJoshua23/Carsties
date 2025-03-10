@@ -1,1 +1,2 @@
 >packages mongodb.entities, microsoft.aspnetcore.authentication.jwtbearer
+>Bidservice will track what items are finished and notify other service
