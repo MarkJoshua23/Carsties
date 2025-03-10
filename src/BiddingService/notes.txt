@@ -1,0 +1,1 @@
+>packages mongodb.entities, microsoft.aspnetcore.authentication.jwtbearer
