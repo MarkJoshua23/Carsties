@@ -13,6 +13,7 @@ public class BidPlacedConsumer : IConsumer<BidPlaced>
         Console.WriteLine("---> Consuming Bid Placed");
         var auction = await DB.Find<Item>().OneAsync(context.Message.AuctionId);
 
+        //this will make sure that the currenthighbid stays the highest number
         if (context.Message.BidStatus.Contains("Accepted") &&
         context.Message.Amount > auction.CurrentHighBid)
         {
