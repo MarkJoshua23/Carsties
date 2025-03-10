@@ -16,17 +16,20 @@ public class BidsController : ControllerBase
     {
         var auction = await DB.Find<Auction>().OneAsync(auctionId);
 
+        //check if the auction item exists
         if (auction == null)
         {
             //TODO check with auction service 
             return NotFound();
         }
 
+        //check if its the user's own item, user cant bid to their items
         if (auction.Seller == User.Identity.Name)
         {
             return BadRequest("You cannot bid on your own auction");
         }
 
+        //ready to insert a new bid
         var bid = new Bid
         {
             Amount = amount,
@@ -34,15 +37,42 @@ public class BidsController : ControllerBase
             Bidder = User.Identity.Name
         };
 
-        //if auctionend is lessthan, that means it is already finished
+        //if auctionend is less than, that means it is already finished
         if (auction.AuctionEnd < DateTime.UtcNow)
         {
-            //well not register it but still save it as record
+            //we'll not register it but still save it as record
             bid.BidStatus = BidStatus.Finished;
         }
+        else
+        {
+            //get the existing highest bid
+            var highBid = await DB.Find<Bid>().
+            Match(a => a.AuctionId == auctionId)
+            .Sort(b => b.Descending(x => x.Amount))
+            .ExecuteFirstAsync();
 
-        var highBid = await DB.Find<Bid>().
-        Match(a => a.AuctionId == auctionId)
-        .Sort(b => b.Descending(x => x.Amount))
-        .ExecuteAnyAsync();
+            //check if the users bid is higher than the highest bid in the db
+            //also true if theres no bid 
+            if (highBid != null && amount > highBid.Amount || highBid == null)
+            {
+
+                //accepted if its higher than the reserveprice 
+                //also accepted if its below as long but is given with different status
+                bid.BidStatus = amount > auction.ReservePrice
+                ? BidStatus.Accepted
+                : BidStatus.AcceptedBelowReserve;
+            }
+
+            //if the bid is less than the highest recorded bid
+            if (highBid != null && bid.Amount <= highBid.Amount)
+            {
+                bid.BidStatus = BidStatus.TooLow;
+            }
+        }
+
+
+
+        await DB.SaveAsync(bid);
+        return Ok(bid);
     }
+}
