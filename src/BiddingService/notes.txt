@@ -1,2 +1,10 @@
 >packages mongodb.entities, microsoft.aspnetcore.authentication.jwtbearer
 >Bidservice will track what items are finished and notify other service
+
+===GRPC====
+>make sure to add protobuf in the csproj , GrpcServices should be Client
+> then go to terminal => dotnet build
+>protos are now in obj/Debug
+>go to appsettings.dev to make a config for keystrel for grpc
+>remove url in launchsettings.json since its already in appsettings
+>add service to program cs after making a grpcauctionclient.cs

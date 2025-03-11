@@ -152,6 +152,7 @@ choose:
 
 
 ===GRPC====
->grpc.aspnetcore
+>grpc.aspnetcore for service(the one who listens for request)
+>google.protobuf, grpc.tools, grpc.net.client for client
 >synchronous
 >needs proto for both server(publisher) client(consumer)
