@@ -43,4 +43,5 @@
 > then go to terminal => dotnet build
 >protos are now in obj/Debug
 >go to appsettings.dev to make a config for keystrel for grpc
+>remove url in launchsettings.json since its already in appsettings
 
