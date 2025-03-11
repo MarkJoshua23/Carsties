@@ -149,3 +149,8 @@ choose:
 ======Possible errors in docker=============
 >identity server will error that the issuer is invalid
 >to fix ,add modification to hostingextensions
+
+
+===GRPC====
+>grpc.aspnetcore
+>synchronous

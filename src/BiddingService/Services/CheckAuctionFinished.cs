@@ -31,6 +31,7 @@ public class CheckAuctionFinished : BackgroundService
         }
     }
 
+    //assigns auction items as 'finished' and the final amount
     private async Task CheckAuctions(CancellationToken stoppingToken)
     {
         var finishedAuctions = await DB.Find<Auction>()
@@ -62,7 +63,7 @@ public class CheckAuctionFinished : BackgroundService
             {
                 ItemSold = winningBid != null,
                 AuctionId = auction.ID,
-                //? so ther can be no winner
+                //? so there can be no winner(make it optional)
                 Winner = winningBid?.Bidder,
                 Amount = winningBid?.Amount,
                 Seller = auction.Seller,
