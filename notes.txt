@@ -154,3 +154,4 @@ choose:
 ===GRPC====
 >grpc.aspnetcore
 >synchronous
+>needs proto for both server(publisher) client(consumer)

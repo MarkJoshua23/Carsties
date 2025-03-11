@@ -35,5 +35,12 @@
 >add the authentication as middleware
 >add the IdentityServiceUrl in appsettings
 >add [Authorize] in protected endpoints like put delete post
->access claims from json through User.Identity.Name 
+>access claims from json through User.Identity.Name
+
+
+=====GRPC====
+>make sure to add protobuf in the csproj
+> then go to terminal => dotnet build
+>protos are now in obj/Debug
+>go to appsettings.dev to make a config for keystrel for grpc
 
