@@ -22,7 +22,7 @@ public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
         Console.WriteLine("---> Consuming Auction Finished");
 
         //look for db item that matches the id of auction item that is finished
-        var auction = await _dbcontext.Auctions.FindAsync(context.Message.AuctionId);
+        var auction = await _dbcontext.Auctions.FindAsync(Guid.Parse(context.Message.AuctionId));
 
         //if that item is sold=true
         if (context.Message.ItemSold)

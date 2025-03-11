@@ -18,7 +18,8 @@ public class BidPlacedConsumer : IConsumer<BidPlaced>
     {
         Console.WriteLine("---> Consuming Bid Placed");
 
-        var auction = await _dbContext.Auctions.FindAsync(context.Message.AuctionId);
+        //convert the id to guid since the pk of the postgres is guid
+        var auction = await _dbContext.Auctions.FindAsync(Guid.Parse(context.Message.AuctionId));
 
         //modify the currenthighbid
         if (auction.CurrentHighBid == null ||
