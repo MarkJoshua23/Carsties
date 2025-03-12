@@ -6,3 +6,5 @@
 
 >before having realtime communication, client should first send a request to establish connection
 > thats the purpose of having route in gateway to the signalr server
+
+>signalr will have connection to the client unlike other service that go to next server before the service

@@ -27,3 +27,7 @@
 >put cluster to appsettings.development & appsettings.Docker
 >use the dev for local dev run and appsettings.Docker for docker config
 >chage the localhost in appsettings.Docker to the image name
+
+====CORS====
+>add cors policy to notification svc in appsettings
+>add the allowed clients in app settings

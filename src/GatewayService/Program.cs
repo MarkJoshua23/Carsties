@@ -22,8 +22,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 
-var app = builder.Build();
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("customPolicy", b =>
+    {
+        b.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()
+        //domains that is allowed to request
+        .WithOrigins(builder.Configuration["ClientApp"]);
+    });
+});
 
+var app = builder.Build();
+app.UseCors();
 app.MapReverseProxy();
 app.UseAuthentication();
 app.UseAuthorization();
