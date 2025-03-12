@@ -1,101 +1,133 @@
 services:
-  postgres:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=postgrespw
-    ports:
-      - 5432:5432
-    volumes:
-      - /var/lib/postgresql/data
-  mongodb:
-    image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=mongopw
-    ports:
-      - 27017:27017
-    volumes:
-      - /data/db
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    ports:
-      - 5672:5672
-      - 15672:15672
-  auction-svc:
-    image: markjoshua/auction-svc:latest
-    build:
-      context: .
-      dockerfile: src/AuctionService/Dockerfile
-    #put overrides to appsettings/launchsettings here
-    environment:
-      #because it defaults to prod so modify it to dev
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
-      - RabbitMq__Host=rabbitmq
-      #change localhost to postgres image name
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=auctions
-      #change localhost to IdentityService image name
-      - IdentityServiceUrl=http://identity-svc
-    ports:
-      #exposes the 80 internal port to 7001 so u can access it to localhost:7001
-      - 7001:80
-      #services that this image will wait to start
-    depends_on:
-      - postgres
-      - rabbitmq
-  search-svc:
-    image: markjoshua/search-svc:latest
-    build:
-      context: .
-      dockerfile: src/SearchService/Dockerfile
-    #put overrides to appsettings/launchsettings here
-    environment:
-      #because it defaults to prod so modify it to dev
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
-      - RabbitMq__Host=rabbitmq
-      #change localhost to mongodb image name
-      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongodb
-      #change localhost to AuctionService image name
-      - AuctionServiceUrl=http://auction-svc
-    ports:
-      #exposes the 80 internal port to 7002 so u can access it to localhost:7001
-      - 7002:80
-      #services that this image will wait to start
-    depends_on:
-      - mongodb
-      - rabbitmq
-  identity-svc:
-    image: markjoshua/identity-svc:latest
-    build:
-      context: .
-      dockerfile: src/IdentityService/Dockerfile
-    #put overrides to appsettings/launchsettings here
-    environment:
-      #because it defaults to prod so modify it to dev
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:80
-      #change localhost to mongodb image name
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=identity
-    ports:
-      #exposes the 80 internal port to 7002 so u can access it to localhost:7001
-      - 5000:80
-      #services that this image will wait to start
-    depends_on:
-      - postgres
-  gateway-svc:
-    image: markjoshua/gateway-svc:latest
-    build:
-      context: .
-      dockerfile: src/GatewayService/Dockerfile
-    #put overrides to appsettings/launchsettings here
-    environment:
-      #it defaults to prod so modify it to appsettings.Docker.json
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:80
-      #change localhost to mongodb image name
-    ports:
-      #exposes the 80 internal port to 7002 so u can access it to localhost:7001
-      - 6001:80
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_PASSWORD=postgrespw
+        ports:
+            - 5432:5432
+        volumes:
+            - /var/lib/postgresql/data
+    mongodb:
+        image: mongo
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=mongopw
+        ports:
+            - 27017:27017
+        volumes:
+            - /data/db
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        ports:
+            - 5672:5672
+            - 15672:15672
+    auction-svc:
+        image: markjoshua/auction-svc:latest
+        build:
+            context: .
+            dockerfile: src/AuctionService/Dockerfile
+        #put overrides to appsettings/launchsettings here
+        environment:
+            #because it defaults to prod so modify it to dev
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ASPNETCORE_URLS=http://+:7777
+            #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+            - RabbitMq__Host=rabbitmq
+            #change localhost to postgres image name
+            - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=auctions
+            #change localhost to IdentityService image name
+            - IdentityServiceUrl=http://identity-svc
+            - Kestrel__Endpoints__Grpc__Protocols=Http2
+            - Kestrel__Endpoints__Grpc__Url=http://+:7777
+            - Kestrel__Endpoints__WebApi__Protocols=Http1
+            - Kestrel__Endpoints__WebApi__Url=http://+:80
+        ports:
+            #exposes the 80 internal port to 7001 so u can access it to localhost:7001
+            - 7001:80
+            - 7777:7777
+            #services that this image will wait to start
+        depends_on:
+            - postgres
+            - rabbitmq
+    search-svc:
+        image: markjoshua/search-svc:latest
+        build:
+            context: .
+            dockerfile: src/SearchService/Dockerfile
+        #put overrides to appsettings/launchsettings here
+        environment:
+            #because it defaults to prod so modify it to dev
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+            - RabbitMq__Host=rabbitmq
+            #change localhost to mongodb image name
+            - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongodb
+            #change localhost to AuctionService image name
+            - AuctionServiceUrl=http://auction-svc
+        ports:
+            #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+            - 7002:80
+            #services that this image will wait to start
+        depends_on:
+            - mongodb
+            - rabbitmq
+    identity-svc:
+        image: markjoshua/identity-svc:latest
+        build:
+            context: .
+            dockerfile: src/IdentityService/Dockerfile
+        #put overrides to appsettings/launchsettings here
+        environment:
+            #because it defaults to prod so modify it to dev
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:80
+            #change localhost to mongodb image name
+            - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=identity
+        ports:
+            #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+            - 5000:80
+            #services that this image will wait to start
+        depends_on:
+            - postgres
+    gateway-svc:
+        image: markjoshua/gateway-svc:latest
+        build:
+            context: .
+            dockerfile: src/GatewayService/Dockerfile
+        #put overrides to appsettings/launchsettings here
+        environment:
+            #it defaults to prod so modify it to appsettings.Docker.json
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:80
+            #change localhost to mongodb image name
+        ports:
+            #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+            - 6001:80
+    bid-svc:
+        image: markjoshua/bid-svc:latest
+        build:
+            context: .
+            dockerfile: src/BiddingService/Dockerfile
+        #put overrides to appsettings/launchsettings here
+        environment:
+            #because it defaults to prod so modify it to dev
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            #this will specify that the rabbitmq host is the rabbitmq image that is included in dockercompose
+            - RabbitMq__Host=rabbitmq
+            #change localhost to mongodb image name
+            #use double underscore in exchange of indent '__'
+            - ConnectionStrings__BidBdConnection=mongodb://root:mongopw@mongodb
+            #change localhost to AuctionService image name
+            #change localhost to IdentityService image name
+            - IdentityServiceUrl=http://identity-svc
+            - GrpcAuction=http://auction-svc:7777
+        ports:
+            #exposes the 80 internal port to 7002 so u can access it to localhost:7001
+            - 7003:80
+            #services that this image will wait to start
+        depends_on:
+            - mongodb
+            - rabbitmq
