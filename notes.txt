@@ -156,3 +156,6 @@ choose:
 >google.protobuf, grpc.tools, grpc.net.client for client
 >synchronous
 >needs proto for both server(publisher) client(consumer)
+
+===SIGNALR====
+>acts as a realtime notifier so ui knows when t update ui

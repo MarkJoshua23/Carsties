@@ -1,0 +1,3 @@
+>add reference to contracts
+>also acts as a consumer
+>add masstransit
