@@ -1,3 +1,8 @@
 >add reference to contracts
 >also acts as a consumer
 >add masstransit
+>make hubs
+>register service in programcs
+
+>before having realtime communication, client should first send a request to establish connection
+> thats the purpose of having route in gateway to the signalr server

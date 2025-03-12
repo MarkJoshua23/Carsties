@@ -159,3 +159,7 @@ choose:
 
 ===SIGNALR====
 >acts as a realtime notifier so ui knows when t update ui
+
+
+===INJECTION====
+>u can inject by making a constructor then lightbulb
