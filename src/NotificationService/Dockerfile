@@ -26,12 +26,12 @@ COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityServ
 RUN dotnet restore Carsties.sln
 
 #copy auction folders to docker
-COPY src/BiddingService src/BiddingService
+COPY src/NotificationService src/NotificationService
 #copy the contracts since it is also used as DTO
 COPY src/Contracts src/Contracts
 
 #after doing everything in the root, switch directory like doing cd on linux to do something at that directory
-WORKDIR /app/src/BiddingService
+WORKDIR /app/src/NotificationService
 
 #publish to dll
 RUN dotnet publish -c Release -o /app/src/out
@@ -42,4 +42,4 @@ WORKDIR /app
 
 #copy the out files from previous image to new image dir app/
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet","BiddingService.dll" ]
+ENTRYPOINT [ "dotnet","NotificationService.dll" ]
