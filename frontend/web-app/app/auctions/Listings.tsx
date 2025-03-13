@@ -10,6 +10,7 @@ import { useParamsStore } from "@/hooks/useParamsStore";
 import { shallow, useShallow } from "zustand/shallow";
 import qs from "query-string";
 import EmptyFilter from "../components/EmptyFilter";
+import { useAuctionStore } from "@/hooks/useAuctionStore";
 
 export default function Listings() {
     // //store the fetched data to data
@@ -22,8 +23,7 @@ export default function Listings() {
     // const [pageNumber, setPageNumber] = useState(1);
     // const [pageSize, setPageSize] = useState(4);
 
-    //store the data from api
-    const [data, setData] = useState<PagedResult<Auction>>();
+    const [loading, setLoading] = useState(true);
     //get the specific params from zustand state
     //shallow ensures re-renders only happen when actual values change.
     const params = useParamsStore(
@@ -37,6 +37,17 @@ export default function Listings() {
             winner: state.winner,
         }))
     );
+
+    //store the data from api
+    const data = useAuctionStore(
+        useShallow((state) => ({
+            auctions: state.auctions,
+            totalCount: state.totalCount,
+            pageCount: state.pageCount,
+        }))
+    );
+
+    const setData = useAuctionStore((state) => state.setData);
     const setParams = useParamsStore((state) => state.setParams);
     //convert params object to url like // "https://example.com?pageNumber=1&pageSize=10&searchTerm=react"
     const url = qs.stringifyUrl({ url: "", query: params });
@@ -45,15 +56,18 @@ export default function Listings() {
         //use zustand to alter the pagenumber
         setParams({ pageNumber });
     }
+
+    //this will run everytime theres a change in state
     useEffect(() => {
         //pass the url so it can get the data
         getData(url).then((data) => {
             setData(data);
+            setLoading(false);
         });
         //call useeffect everytime url (pagenumber, pagesize, searchterm) changes
     }, [url]);
 
-    if (!data)
+    if (loading)
         return <Spinner aria-label="Extra large spinner example" size="xl" />;
 
     return (
@@ -64,7 +78,7 @@ export default function Listings() {
             ) : (
                 <>
                     <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
-                        {data.results.map((auction, index) => (
+                        {data.auctions.map((auction, index) => (
                             <AuctionCard auction={auction} key={index} />
                         ))}
                     </div>
