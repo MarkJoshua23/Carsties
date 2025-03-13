@@ -49,8 +49,14 @@ async function del(url: string) {
 
 async function handleResponse(response: Response) {
     const text = await response.text();
+    console.log({ text });
     //parse text if its not null or empty string
-    const data = text && JSON.parse(text);
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (error) {
+        data = text;
+    }
     console.log(response);
     if (response.ok) {
         // console.log(response);
@@ -58,7 +64,8 @@ async function handleResponse(response: Response) {
     } else {
         const error = {
             status: response.status,
-            message: response.statusText,
+            //if the data has string, then use it, if not then use the response
+            message: typeof data === "string" ? data : response.statusText,
         };
         //return error as an object
         return { error };

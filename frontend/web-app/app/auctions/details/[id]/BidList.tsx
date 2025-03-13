@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import BidItem from "./BidItem";
 import { numberWithCommas } from "@/app/lib/numberWithComma";
 import EmptyFilter from "@/app/components/EmptyFilter";
+import BidForm from "./BidForm";
 
 type Props = {
     user: User | null;
@@ -70,6 +71,9 @@ export default function BidList({ user, auction }: Props) {
                         ))}
                     </>
                 )}
+            </div>
+            <div className="px-2 pb-2 text-gray-500">
+                <BidForm auctionId={auction.id} highBid={highBid} />
             </div>
         </div>
     );
