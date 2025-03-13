@@ -95,3 +95,7 @@ app
 
 ====fetch====
 > you can already access id through response.id as long as the Response is already .json() or JSON.parse()
+
+
+=====date format=====
+>npm install date-fns
