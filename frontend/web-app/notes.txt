@@ -99,3 +99,16 @@ app
 
 =====date format=====
 >npm install date-fns
+
+===bidding flow =====
+>fetch the existing bids
+>put it in the state
+>display it
+>submit a bid
+>send it to server, wait for response
+>get the response and add that particular bid to the current bids in state
+>this way were only adding bids and not refetching the entire bids
+
+====SIGNALR====
+>used for realtime updates
+>npm install @microsoft/signalr

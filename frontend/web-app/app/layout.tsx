@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./nav/Navbar";
 import ToasterProvider from "./providers/ToasterProvider";
+import SignalRProvider from "./providers/SignalRProvider";
 
 export const metadata: Metadata = {
     title: "Carsties",
@@ -15,12 +16,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     //children in main is the page tsx
+    //children can change based on url so the navbar stays in all screens since its not child
     return (
         <html lang="en">
             <body>
                 <ToasterProvider />
                 <Navbar />
-                <main className="container mx-auto px-5 pt-10">{children}</main>
+                <main className="container mx-auto px-5 pt-10">
+                    <SignalRProvider>{children}</SignalRProvider>
+                </main>
             </body>
         </html>
     );
