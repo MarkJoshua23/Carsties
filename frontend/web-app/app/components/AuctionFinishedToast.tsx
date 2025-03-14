@@ -32,7 +32,7 @@ export default function AuctionFinishedToast({
                     {finishedAuction.itemSold && finishedAuction.amount ? (
                         <p>
                             Congrats to {finishedAuction.winner} who has won
-                            this auction for $$
+                            this auction for $
                             {numberWithCommas(finishedAuction.amount)}{" "}
                         </p>
                     ) : (

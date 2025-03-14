@@ -22,9 +22,20 @@ export default function BidList({ user, auction }: Props) {
     const [loading, setLoading] = useState(true);
     const bids = useBidStore((state) => state.bids);
     const setBids = useBidStore((state) => state.setBids);
+    const open = useBidStore((state) => state.open);
+    const setOpen = useBidStore((state) => state.setOpen);
+    //true if auction end date is larger than current date
+    const openForBids = new Date(auction.auctionEnd) > new Date();
+
     //loops all the bids to find the highest
     const highBid = bids.reduce(
-        (prev, current) => (prev > current.amount ? prev : current.amount),
+        (prev, current) =>
+            prev > current.amount
+                ? prev
+                : //to make sure it doesnt accept if the auction is finished
+                current.bidStatus.includes("Accepted")
+                ? current.amount
+                : prev,
         0
     );
 
@@ -42,6 +53,11 @@ export default function BidList({ user, auction }: Props) {
             })
             .finally(() => setLoading(false));
     }, [auction.id, setLoading, setBids]);
+
+    useEffect(() => {
+        //this will ensure if the auction is finished and user cant bid anymore
+        setOpen(openForBids);
+    }, [openForBids, setOpen]);
 
     if (loading)
         return <Spinner aria-label="Extra large spinner example" size="xl" />;
@@ -73,7 +89,11 @@ export default function BidList({ user, auction }: Props) {
                 )}
             </div>
             <div className="px-2 pb-2 text-gray-500">
-                {!user ? (
+                {!open ? (
+                    <div className="flex items-center justify-center p-2 text-lg font-semibold">
+                        This Auction has finished
+                    </div>
+                ) : !user ? (
                     <div className="flex items-center justify-center p-2 text-lg font-semibold">
                         Please login to make a bid
                     </div>
