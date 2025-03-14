@@ -21,7 +21,15 @@ export default function BidForm({ auctionId, highBid }: Props) {
     const addBid = useBidStore((state) => state.addBid);
 
     function onSubmit(data: FieldValues) {
-        //'+' just to make sure it is a number
+        //dont allow values lesser than highbid
+        if (data.amount <= highBid) {
+            reset();
+            return toast.error(
+                "Bid must be at least $" + numberWithCommas(highBid + 1)
+            );
+        }
+
+        //'+' just to make sure it is a number and if not, cast the value to number
         placeBidForAuction(auctionId, +data.amount)
             .then((bid) => {
                 if (bid.error) throw bid.error;
