@@ -1,13 +1,15 @@
 "use client";
 import { useAuctionStore } from "@/hooks/useAuctionStore";
 import { useBidStore } from "@/hooks/useBidStore";
-import { Auction, Bid } from "@/types";
+import { Auction, AuctionFinished, Bid } from "@/types";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { User } from "next-auth";
 import { useParams } from "next/navigation";
 import React, { ReactNode, useCallback, useEffect, useRef } from "react";
 import AuctionCreatedToast from "../components/AuctionCreatedToast";
 import toast from "react-hot-toast";
+import { getDetailedViewData } from "../actions/auctionActions";
+import AuctionFinishedToast from "../components/AuctionFinishedToast";
 
 type Props = {
     children: ReactNode;
@@ -32,6 +34,28 @@ export default function SignalRProvider({ children, user }: Props) {
             }
         },
         [user?.username]
+    );
+
+    const handleAuctionFinished = useCallback(
+        (finishedAuction: AuctionFinished) => {
+            //dont use await if we want to use the promise for loading
+            const auction = getDetailedViewData(finishedAuction.auctionId);
+            return toast.promise(
+                auction,
+                {
+                    loading: "Loading",
+                    success: (auction) => (
+                        <AuctionFinishedToast
+                            auction={auction}
+                            finishedAuction={finishedAuction}
+                        />
+                    ),
+                    error: (err) => "Auction finished",
+                },
+                { success: { duration: 10000, icon: null } }
+            );
+        },
+        []
     );
 
     //so the function will not rebuilld every rerender
@@ -71,12 +95,14 @@ export default function SignalRProvider({ children, user }: Props) {
 
         //listen to the signalr auctioncreated
         connection.current.on("AuctionCreated", handleAuctionCreated);
+        connection.current.on("AuctionFinished", handleAuctionFinished);
 
         return () => {
             connection.current?.off("BidPlaced", handleBidPlaced);
             connection.current?.off("AuctionCreated", handleAuctionCreated);
+            connection.current?.off("AuctionFinished", handleAuctionFinished);
         };
-    }, [setCurrentPrice, handleBidPlaced]);
+    }, [setCurrentPrice, handleBidPlaced, handleAuctionFinished]);
     //children is the component inside this component when called
     return children;
 }
