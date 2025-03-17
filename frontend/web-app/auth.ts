@@ -17,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientId: "nextApp",
             clientSecret: "secret",
             //url of identity server
-            issuer: "http://localhost:5000",
+            issuer: process.env.ID_URL,
             authorization: { params: { scope: "openid profile auctionApp" } },
             //get claims automatically, request for jwt
             idToken: true,

@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
-import { error } from "console";
-import { headers } from "next/headers";
 
-const baseUrl = "http://localhost:6001/";
+//env variable
+const baseUrl = process.env.API_URL;
 
 async function get(url: string) {
     const requestOptions = {

@@ -1,6 +1,5 @@
 "use server";
-import { auth } from "@/auth";
-import { fetchWrapper } from "@/lib/fetchWrapper";
+import { fetchWrapper } from "@/app/lib/fetchWrapper";
 //put use server to specify its a server functions
 import { Auction, Bid, PagedResult } from "@/types";
 import { revalidatePath } from "next/cache";

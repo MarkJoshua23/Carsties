@@ -112,3 +112,7 @@ app
 ====SIGNALR====
 >used for realtime updates
 >npm install @microsoft/signalr
+
+
+===Deployment=====
+>move the urls to env

@@ -13,8 +13,12 @@ import DeleteButton from "./DeleteButton";
 import BidItem from "./BidItem";
 import BidList from "./BidList";
 
-export default async function Details({ params }: { params: { id: string } }) {
-    const { id } = await params;
+export default async function Details({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const id = (await params).id;
     //the specific auction
     const data = await getDetailedViewData(id);
     const user = await getCurrentUser();

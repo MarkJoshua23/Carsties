@@ -17,6 +17,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const user = await getCurrentUser();
+    const notifyUrl = process.env.NOTIFY_URL;
     //children in main is the page tsx
     //children can change based on url so the navbar stays in all screens since its not child
     return (
@@ -26,7 +27,9 @@ export default async function RootLayout({
                 <ToasterProvider />
                 <Navbar />
                 <main className="container mx-auto px-5 pt-10">
-                    <SignalRProvider user={user}>{children}</SignalRProvider>
+                    <SignalRProvider user={user} notifyUrl={notifyUrl!}>
+                        {children}
+                    </SignalRProvider>
                 </main>
             </body>
         </html>

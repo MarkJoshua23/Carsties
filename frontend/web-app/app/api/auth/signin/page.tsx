@@ -4,9 +4,9 @@ import React from "react";
 export default async function SignIn({
     searchParams,
 }: {
-    searchParams: { callbackUrl: string | undefined };
+    searchParams: Promise<{ callbackUrl: string | undefined }>;
 }) {
-    const { callbackUrl } = await searchParams;
+    const callbackUrl = (await searchParams).callbackUrl;
     return (
         <EmptyFilter
             title="You need to be logged in to do that"

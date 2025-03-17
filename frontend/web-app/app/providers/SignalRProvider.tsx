@@ -14,8 +14,9 @@ import AuctionFinishedToast from "../components/AuctionFinishedToast";
 type Props = {
     children: ReactNode;
     user: User | null;
+    notifyUrl: string;
 };
-export default function SignalRProvider({ children, user }: Props) {
+export default function SignalRProvider({ children, user, notifyUrl }: Props) {
     //just like usestate but no rerender
     const connection = useRef<HubConnection | null>(null);
     //to change the price of the price in the homepage
@@ -79,7 +80,8 @@ export default function SignalRProvider({ children, user }: Props) {
             //update the connection useref
             connection.current = new HubConnectionBuilder()
                 //gateway url
-                .withUrl("http://localhost:6001/notifications")
+                //passed from parent server component so we can env
+                .withUrl(notifyUrl)
                 .withAutomaticReconnect()
                 .build();
             connection.current
@@ -102,7 +104,7 @@ export default function SignalRProvider({ children, user }: Props) {
             connection.current?.off("AuctionCreated", handleAuctionCreated);
             connection.current?.off("AuctionFinished", handleAuctionFinished);
         };
-    }, [setCurrentPrice, handleBidPlaced, handleAuctionFinished]);
+    }, [setCurrentPrice, handleBidPlaced, handleAuctionFinished, notifyUrl]);
     //children is the component inside this component when called
     return children;
 }
