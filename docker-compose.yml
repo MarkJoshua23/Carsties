@@ -83,10 +83,12 @@ services:
             #because it defaults to prod so modify it to dev
             - ASPNETCORE_ENVIRONMENT=Docker
             - ASPNETCORE_URLS=http://+:80
-            - IssuerUri=http://localhost:5000
-            - ClientApp=http://localhost:3000
+            - IssuerUri=http://id.carsties.local
+            - ClientApp=http://app.carsties.local
             #change localhost to mongodb image name
             - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=identity
+            - VIRTUAL_HOST=id.carsties.local
+
         ports:
             #exposes the 80 internal port to 7002 so u can access it to localhost:7001
             - 5000:80
@@ -103,10 +105,8 @@ services:
             #it defaults to prod so modify it to appsettings.Docker.json
             - ASPNETCORE_ENVIRONMENT=Docker
             - ASPNETCORE_URLS=http://+:80
-            #change localhost to mongodb image name
-        ports:
-            #exposes the 80 internal port to 7002 so u can access it to localhost:7001
-            - 6001:80
+            - ClientApp=http://app.carsties.local
+            - VIRTUAL_HOST=api.carsties.local
     bid-svc:
         image: markjoshua/bid-svc:latest
         build:
@@ -159,19 +159,31 @@ services:
         #this is for caching
         volumes:
             - /var/lib/web/data
-        ports:
-            - 3000:3000
+        #ports are now unnecessary in nginx proxy
+        # ports:
+        #     - 3000:3000
         environment:
             #copy the env in env.local
             - AUTH_SECRET="soGGsiaRLtcewWt5lpGpSZXJ2Xtj2UZGqcBRsdiHUGE=" # Added by `npx auth`. Read more: https://cli.authjs.dev
             #just the image name since were in docker
             - API_URL=http://gateway-svc/
             #this will be used for browser
-            - ID_URL=http://localhost:5000
+            - ID_URL=http://id.carsties.local
             #used for docker networjing
             - ID_URL_INTERNAL=http://identity-svc
             #it stays since the browser is the one accessing
-            - NOTIFY_URL=http://localhost:6001/notifications
-            - AUTH_URL=http://localhost:3000
+            - NOTIFY_URL=http://api.carsties.local/notifications
+            - AUTH_URL=http://app.carsties.local
             - AUTH_URL_INTERNAL=http://web-app:3000
             - AUTH_TRUST_HOST=true
+            #part of nginx proxy this will be the xposed url
+            - VIRTUAL_HOST=app.carsties.local
+            - VIRTUAL_PORT=3000
+    #this is from the documentation
+    nginx-proxy:
+        image: nginxproxy/nginx-proxy
+        container_name: nginx-proxy
+        ports:
+            - "80:80"
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
