@@ -29,19 +29,15 @@ internal static class HostingExtensions
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
 
-                //check if the env is in Docker
-                if (builder.Environment.IsEnvironment("Docker"))
-                {
-                    //make it the identity image name
-                    options.IssuerUri = "http://localhost:5000";
-                }
+                //make it the identity image name
+                options.IssuerUri = builder.Configuration["IssuerUri"];
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 //options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>()
 
             //add the custom profile made to put claims in jwt

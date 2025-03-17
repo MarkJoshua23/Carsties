@@ -19,7 +19,7 @@ public static class Config
             new ApiScope("auctionApp", "Auction app full access"),
         };
 
-    public static IEnumerable<Client> Clients =>
+    public static IEnumerable<Client> Clients(IConfiguration config) =>
         new Client[]
         {
             new Client{
@@ -41,7 +41,8 @@ public static class Config
                 //additional security
                 //for mobile app make it true
                 RequirePkce=false,
-                RedirectUris={"http://localhost:3000/api/auth/callback/id-server"},
+                //this is auth js convention
+                RedirectUris={config["ClientApp"]+"/api/auth/callback/id-server"},
                 //for refresh token
                 AllowOfflineAccess=true,
                 AllowedScopes =  { "openid", "profile", "auctionApp" },

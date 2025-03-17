@@ -83,6 +83,8 @@ services:
             #because it defaults to prod so modify it to dev
             - ASPNETCORE_ENVIRONMENT=Docker
             - ASPNETCORE_URLS=http://+:80
+            - IssuerUri=http://localhost:5000
+            - ClientApp=http://localhost:3000
             #change localhost to mongodb image name
             - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Username=postgres;Password=postgrespw;Database=identity
         ports:
@@ -149,3 +151,27 @@ services:
             #services that this image will wait to start
         depends_on:
             - rabbitmq
+    web-app:
+        image: markjoshua/web-app
+        build:
+            context: .
+            dockerfile: frontend/web-app/Dockerfile
+        #this is for caching
+        volumes:
+            - /var/lib/web/data
+        ports:
+            - 3000:3000
+        environment:
+            #copy the env in env.local
+            - AUTH_SECRET="soGGsiaRLtcewWt5lpGpSZXJ2Xtj2UZGqcBRsdiHUGE=" # Added by `npx auth`. Read more: https://cli.authjs.dev
+            #just the image name since were in docker
+            - API_URL=http://gateway-svc/
+            #this will be used for browser
+            - ID_URL=http://localhost:5000
+            #used for docker networjing
+            - ID_URL_INTERNAL=http://identity-svc
+            #it stays since the browser is the one accessing
+            - NOTIFY_URL=http://localhost:6001/notifications
+            - AUTH_URL=http://localhost:3000
+            - AUTH_URL_INTERNAL=http://web-app:3000
+            - AUTH_TRUST_HOST=true

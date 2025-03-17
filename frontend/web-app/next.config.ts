@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     eslint: {
         ignoreDuringBuilds: true, // Allow production builds even with ESLint errors
     },
+    output: "standalone",
 };
 
 export default nextConfig;

@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import NextAuth, { Profile } from "next-auth";
 import { OIDCConfig } from "next-auth/providers";
 import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6";
@@ -17,8 +18,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientId: "nextApp",
             clientSecret: "secret",
             //url of identity server
+            //issuer should be the same as the issuer in the identity server
             issuer: process.env.ID_URL,
-            authorization: { params: { scope: "openid profile auctionApp" } },
+            authorization: {
+                params: { scope: "openid profile auctionApp" },
+                url: process.env.ID_URL + "/connect/authorize",
+            },
+            token: {
+                url: `${process.env.ID_URL_INTERNAL}/connect/token`,
+            },
+            userinfo: {
+                url: `${process.env.ID_URL_INTERNAL}/connect/token`,
+            },
             //get claims automatically, request for jwt
             idToken: true,
             //Omit ignores the username that is originally used for token since it will not be used in this provider
@@ -26,6 +37,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     //to see jwt infos
     callbacks: {
+        async redirect({ url, baseUrl }) {
+            return url.startsWith(baseUrl) ? url : baseUrl;
+        },
         //to enable secured routes
         async authorized({ auth }) {
             return !!auth;

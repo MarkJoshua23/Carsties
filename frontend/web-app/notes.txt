@@ -116,3 +116,5 @@ app
 
 ===Deployment=====
 >move the urls to env
+>to run next js in docker it needs to be a standalone
+>just put standalone in next config
